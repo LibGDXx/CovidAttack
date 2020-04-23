@@ -7,9 +7,9 @@ import com.mygdx.game.CovidAttack;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = CovidAttack.WIDTH;
-		config.height = CovidAttack.HEIGHT;
-		config.title = CovidAttack.TITLE;
+		config.width = 500;
+		config.height = 500;
+		config.title = "Hi";
 		new LwjglApplication(new CovidAttack(), config);
 	}
 }
