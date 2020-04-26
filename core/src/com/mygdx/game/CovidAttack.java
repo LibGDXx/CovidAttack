@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.states.GameStateManager;
 import com.mygdx.game.states.MenuState;
 
+
 import java.awt.*;
 
 public class CovidAttack extends ApplicationAdapter {
@@ -22,6 +23,7 @@ public class CovidAttack extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		img = new Texture("C:\\Users\\Joey Chalupa\\Desktop\\Java\\CovidAttackCahtyon.jpg");
 		gsm = new GameStateManager();
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		gsm.push(new MenuState(gsm));
