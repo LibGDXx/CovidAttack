@@ -109,4 +109,3 @@ public class CovidAttack extends ApplicationAdapter {
 		player.getBody().setLinearVelocity(horizontalForce * Player.RUN_FORCE, player.getBody().getLinearVelocity().y);
 	}
 }
-
