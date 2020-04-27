@@ -32,6 +32,7 @@ public class CovidAttack extends ApplicationAdapter {
 	private Texture texture;
 	private OrthogonalTiledMapRenderer tiledMapRenderer;
 	private TiledMap tiledMap;
+
 	@Override
 	public void create () {
 		orthographicCamera = new OrthographicCamera();
