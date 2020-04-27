@@ -7,7 +7,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 
 public class CovidAttack extends ApplicationAdapter {
 	private static final float SCALE = 2.0f;
@@ -33,7 +39,12 @@ public class CovidAttack extends ApplicationAdapter {
 		world = new World(new Vector2(VELOCITY_X, VELOCITY_Y), false);
 		world.setContactListener(new WorldContactListener());
 		batch = new SpriteBatch();
-
+		texture = new Texture(Player.PLAYER_IMG_PATH);
+		box2DDebugRenderer = new Box2DDebugRenderer();
+		tiledMap = new TmxMapLoader().load(MAP_PATH);
+		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+		MapParser.parseMapLayers(world, tiledMap);
+		player = new Player(world);
 	}
 	@Override
 	public void render () {
@@ -98,4 +109,3 @@ public class CovidAttack extends ApplicationAdapter {
 		player.getBody().setLinearVelocity(horizontalForce * Player.RUN_FORCE, player.getBody().getLinearVelocity().y);
 	}
 }
-
