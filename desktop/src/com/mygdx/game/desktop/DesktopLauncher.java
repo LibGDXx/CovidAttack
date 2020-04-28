@@ -9,7 +9,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = 500;
 		config.height = 500;
-		config.title = "Hi";
+		config.title = "CovidAttack";
 		new LwjglApplication(new CovidAttack(), config);
 	}
 }
