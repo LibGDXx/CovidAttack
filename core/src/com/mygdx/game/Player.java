@@ -1,5 +1,8 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class Player {
@@ -13,6 +16,7 @@ public class Player {
     private Body body;
     private boolean isJumping = false;
     private boolean isDead = false;
+
 
     public Player(World world) {
         createBoxBody(world, PLAYER_START_X, PLAYER_START_Y);
@@ -31,7 +35,6 @@ public class Player {
         body = world.createBody(bdef);
         body.createFixture(fixtureDef).setUserData(this);
     }
-
     public Body getBody() {
         return body;
     }
