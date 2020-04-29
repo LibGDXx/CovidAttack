@@ -35,7 +35,6 @@ public class Player {
         body = world.createBody(bdef);
         body.createFixture(fixtureDef).setUserData(this);
     }
-
     public Body getBody() {
         return body;
     }

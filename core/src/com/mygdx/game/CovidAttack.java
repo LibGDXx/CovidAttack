@@ -4,9 +4,10 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -29,9 +30,18 @@ public class CovidAttack extends ApplicationAdapter {
 	private World world;
 	private Player player;
 	private SpriteBatch batch;
-	private Texture texture;
 	private OrthogonalTiledMapRenderer tiledMapRenderer;
 	private TiledMap tiledMap;
+	private static final int FRAME_COLS = 2;
+	private static final int FRAME_ROWS = 2;
+	private static final int FRAME_ROWS1 = 2;
+	private static final int FRAME_COLS1 = 2;
+	Animation<TextureRegion> jumpAnimation;
+	Animation<TextureRegion> idleAnimation;
+	float stateTime;
+	public static int state;
+	Texture jump;
+	Texture idle;
 
 	@Override
 	public void create () {
@@ -40,12 +50,41 @@ public class CovidAttack extends ApplicationAdapter {
 		world = new World(new Vector2(VELOCITY_X, VELOCITY_Y), false);
 		world.setContactListener(new WorldContactListener());
 		batch = new SpriteBatch();
-		texture = new Texture(Player.PLAYER_IMG_PATH);
+
+		jump = new Texture(Gdx.files.internal("Jumping.png"));
+
+		TextureRegion[][] tmp2 = TextureRegion.split(jump, jump.getWidth() / FRAME_COLS, jump.getHeight() / FRAME_ROWS);
+
+		TextureRegion[] jumpFrame1 = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+		int index2 = 0;
+		for(int i = 0; i < FRAME_ROWS; i++){
+			for(int j = 0; j < FRAME_COLS; j++){
+				jumpFrame1[index2++] = tmp2[i][j];
+			}
+		}
+
+		jumpAnimation = new Animation<TextureRegion>(.10f, jumpFrame1);
+
+		idle = new Texture(Gdx.files.internal("Character-idle.png"));
+
+		TextureRegion[][] tmp3 = TextureRegion.split(idle, idle.getWidth() / FRAME_COLS1, idle.getHeight() / FRAME_ROWS1);
+
+		TextureRegion[] idleFrame = new TextureRegion[FRAME_COLS1 * FRAME_ROWS1];
+		int index3 = 0;
+		for(int i = 0; i < FRAME_ROWS1; i++){
+			for(int j = 0; j < FRAME_COLS1; j++){
+				idleFrame[index3++] = tmp3[i][j];
+			}
+		}
+
+		idleAnimation = new Animation<TextureRegion>(.05f, idleFrame);
+
 		box2DDebugRenderer = new Box2DDebugRenderer();
 		tiledMap = new TmxMapLoader().load(MAP_PATH);
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 		MapParser.parseMapLayers(world, tiledMap);
 		player = new Player(world);
+
 	}
 	@Override
 	public void render () {
@@ -53,10 +92,32 @@ public class CovidAttack extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0.5f, 0.8f, 1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		tiledMapRenderer.render();
+		stateTime += Gdx.graphics.getDeltaTime();
+		TextureRegion currentFrame;
 		batch.begin();
-		batch.draw(texture, player.getBody().getPosition().x * PIXEL_PER_METER - (texture.getWidth() / 2),
-				player.getBody().getPosition().y * PIXEL_PER_METER - (texture.getHeight() / 2));
+		switch(state){
+			default:
+				currentFrame = idleAnimation.getKeyFrame(stateTime, true);
+				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (idle.getWidth() / 2),
+				player.getBody().getPosition().y * PIXEL_PER_METER - (idle.getHeight() / 2));
+				break;
+			case 1:
+				currentFrame = jumpAnimation.getKeyFrame(stateTime, true);
+				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (jump.getWidth() / 2),
+						player.getBody().getPosition().y * PIXEL_PER_METER - (jump.getHeight() / 2));
+				break;
+		}
 		batch.end();
+	}
+	@Override
+	public void dispose() {
+		batch.dispose();
+		jump.dispose();
+		idle.dispose();
+		box2DDebugRenderer.dispose();
+		world.dispose();
+		tiledMapRenderer.dispose();
+		tiledMap.dispose();
 	}
 	private void update() {
 		world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
@@ -76,30 +137,26 @@ public class CovidAttack extends ApplicationAdapter {
 	public void resize(int width, int height) {
 		orthographicCamera.setToOrtho(false, width / SCALE, height / SCALE);
 	}
-	@Override
-	public void dispose() {
-		texture.dispose();
-		batch.dispose();
-		box2DDebugRenderer.dispose();
-		world.dispose();
-		tiledMapRenderer.dispose();
-		tiledMap.dispose();
-	}
 	private void inputUpdate() {
 		int horizontalForce = 0;
 		boolean isJumping = false;
 		if (Gdx.input.isTouched()) {
 			Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
 			touchPos = orthographicCamera.unproject(touchPos);
-			if (touchPos.x / PIXEL_PER_METER > player.getBody().getPosition().x)
+			if (touchPos.x / PIXEL_PER_METER > player.getBody().getPosition().x) {
 				horizontalForce += 1;
-			if (touchPos.x / PIXEL_PER_METER < player.getBody().getPosition().x)
+			}
+			if (touchPos.x / PIXEL_PER_METER < player.getBody().getPosition().x) {
 				horizontalForce -= 1;
-			if (touchPos.y / PIXEL_PER_METER > player.getBody().getPosition().y && !player.isJumping())
+			}
+			if (touchPos.y / PIXEL_PER_METER > player.getBody().getPosition().y && !player.isJumping()) {
 				player.getBody().applyForceToCenter(0, Player.JUMP_FORCE, false);
+				state = 1;
+			}
 		}
 		player.getBody().setLinearVelocity(horizontalForce * Player.RUN_FORCE, player.getBody().getLinearVelocity().y);
 	}
+
 	private void playerUpdate(int horizontalForce, boolean isJumping) {
 		if (player.isDead()) {
 			world.destroyBody(player.getBody());
