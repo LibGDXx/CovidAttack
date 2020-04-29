@@ -12,6 +12,7 @@ public class WorldContactListener implements ContactListener {
         if (isGroundContact(fa, fb)) {
             Player player = (Player) fb.getUserData();
             player.setJumping(false);
+            CovidAttack.state = 2;
         }
         if (isDangerContact(fa, fb)) {
             Player player = (Player) fb.getUserData();
