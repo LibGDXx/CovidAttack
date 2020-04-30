@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -15,6 +16,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class CovidAttack extends ApplicationAdapter {
 	private static final float SCALE = 2.0f;
@@ -42,14 +46,24 @@ public class CovidAttack extends ApplicationAdapter {
 	public static int state;
 	Texture jump;
 	Texture idle;
+	private Texture home;
+	private Texture start;
+	private Texture stop;
+	public BitmapFont font;
+
+
 
 	@Override
 	public void create () {
+		home = new Texture("C:\\Users\\Joey Chalupa\\Desktop\\Java\\CovidAttack\\android\\assets\\TitleScreen.png");
+		start = new Texture("C:\\Users\\Joey Chalupa\\Desktop\\Java\\CovidAttack\\android\\assets\\new start.png");
+
 		orthographicCamera = new OrthographicCamera();
 		orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth() / SCALE, Gdx.graphics.getHeight() / SCALE);
 		world = new World(new Vector2(VELOCITY_X, VELOCITY_Y), false);
 		world.setContactListener(new WorldContactListener());
 		batch = new SpriteBatch();
+		font = new BitmapFont();
 
 		jump = new Texture(Gdx.files.internal("Jumping.png"));
 
@@ -87,7 +101,14 @@ public class CovidAttack extends ApplicationAdapter {
 
 	}
 	@Override
-	public void render () {
+	public void render (SpriteBatch sb) {
+		super.render();
+		sb.begin();
+		sb.draw(home, 0, 0, 500, 500);
+		sb.draw(start,  250-(start.getWidth() / 2), 250);
+		sb.end();
+
+
 		update();
 		Gdx.gl.glClearColor(0.5f, 0.8f, 1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -108,10 +129,26 @@ public class CovidAttack extends ApplicationAdapter {
 				break;
 		}
 		batch.end();
+		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		camera.update();
+		game.batch.setProjectionMatrix(camera.combined);
+
+		game.batch.begin();
+		game.font.draw(game.batch, "Welcome to Covid Attack!!! ", 100, 150);
+		game.font.draw(game.batch, "Tap anywhere to begin!", 100, 100);
+		game.batch.end();
+
+		if (Gdx.input.isTouched()) {
+			game.setScreen(new GameScreen(game));
+			dispose();
+		}
 	}
 	@Override
 	public void dispose() {
 		batch.dispose();
+		font.dispose();
 		jump.dispose();
 		idle.dispose();
 		box2DDebugRenderer.dispose();
