@@ -6,11 +6,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -29,6 +31,7 @@ public class CovidAttack extends ApplicationAdapter {
 	private Box2DDebugRenderer box2DDebugRenderer;
 	private World world;
 	private Player player;
+	private Enemy enemy;
 	private SpriteBatch batch;
 	private OrthogonalTiledMapRenderer tiledMapRenderer;
 	private TiledMap tiledMap;
@@ -40,8 +43,17 @@ public class CovidAttack extends ApplicationAdapter {
 	Animation<TextureRegion> idleAnimation;
 	float stateTime;
 	public static int state;
-	Texture jump;
-	Texture idle;
+	private Texture playerJump;
+	private Texture playerIdle;
+	private Texture enemy1Texture;
+//	private Texture player1;
+//	private Rectangle rectPlayer;
+//	private Rectangle rectEnemy;
+//	private Sprite playerSprite;
+//	private Sprite enemy1;
+//	private float yPosition = -40;
+//	private float player1X;
+//	private float player1Y;
 
 	@Override
 	public void create () {
@@ -50,10 +62,10 @@ public class CovidAttack extends ApplicationAdapter {
 		world = new World(new Vector2(VELOCITY_X, VELOCITY_Y), false);
 		world.setContactListener(new WorldContactListener());
 		batch = new SpriteBatch();
+		enemy1Texture = new Texture(Enemy.ENEMY_IMG_PATH);
+		playerJump = new Texture(Gdx.files.internal("Jumping.png"));
 
-		jump = new Texture(Gdx.files.internal("Jumping.png"));
-
-		TextureRegion[][] tmp2 = TextureRegion.split(jump, jump.getWidth() / FRAME_COLS, jump.getHeight() / FRAME_ROWS);
+		TextureRegion[][] tmp2 = TextureRegion.split(playerJump, playerJump.getWidth() / FRAME_COLS, playerJump.getHeight() / FRAME_ROWS);
 
 		TextureRegion[] jumpFrame1 = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 		int index2 = 0;
@@ -65,9 +77,9 @@ public class CovidAttack extends ApplicationAdapter {
 
 		jumpAnimation = new Animation<TextureRegion>(.10f, jumpFrame1);
 
-		idle = new Texture(Gdx.files.internal("Character-idle.png"));
+		playerIdle = new Texture(Gdx.files.internal("Character-idle.png"));
 
-		TextureRegion[][] tmp3 = TextureRegion.split(idle, idle.getWidth() / FRAME_COLS1, idle.getHeight() / FRAME_ROWS1);
+		TextureRegion[][] tmp3 = TextureRegion.split(playerIdle, playerIdle.getWidth() / FRAME_COLS1, playerIdle.getHeight() / FRAME_ROWS1);
 
 		TextureRegion[] idleFrame = new TextureRegion[FRAME_COLS1 * FRAME_ROWS1];
 		int index3 = 0;
@@ -84,6 +96,18 @@ public class CovidAttack extends ApplicationAdapter {
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 		MapParser.parseMapLayers(world, tiledMap);
 		player = new Player(world);
+		enemy = new Enemy(world);
+
+//		player1 = new Texture(Gdx.files.internal("Character-single.png"));
+//		playerSprite = new Sprite(player1);
+//		player1X = 300;
+//		 player1Y = 0;
+//
+//		enemy1 = new Sprite(new Texture("enemy1.png"));
+//		enemy1.setPosition(260, 580);
+//
+//		rectEnemy = new Rectangle(enemy1.getX(), enemy1.getY(), enemy1.getWidth(), enemy1.getHeight());
+//		rectPlayer = new Rectangle(playerSprite.getX(), playerSprite.getY(), playerSprite.getWidth(), playerSprite.getHeight());
 
 	}
 	@Override
@@ -95,16 +119,37 @@ public class CovidAttack extends ApplicationAdapter {
 		stateTime += Gdx.graphics.getDeltaTime();
 		TextureRegion currentFrame;
 		batch.begin();
+		enemy1Draw();
+
+//		batch.draw(player1, player.getBody().getPosition().x * PIXEL_PER_METER - (player1.getWidth() / 2),
+//				player.getBody().getPosition().y * PIXEL_PER_METER - (player1.getHeight() / 2));
+//		rectPlayer = playerSprite.getBoundingRectangle();
+//		rectEnemy = enemy1.getBoundingRectangle();
+//
+//		boolean isOverlapping = rectPlayer.overlaps(rectEnemy);
+//		if(!isOverlapping){
+//			System.out.println("not overlap");
+//			yPosition = yPosition + (20);
+//		}
+//		else{
+//			world.destroyBody(player.getBody());
+//		}
+
+		if((player.getBody().getPosition().x == enemy.getBody1().getPosition().x)){
+			world.destroyBody(player.getBody());
+//			world.step(0,0,0);
+//			player.getBody().setActive(false);
+		}
 		switch(state){
 			default:
 				currentFrame = idleAnimation.getKeyFrame(stateTime, true);
-				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (idle.getWidth() / 2),
-				player.getBody().getPosition().y * PIXEL_PER_METER - (idle.getHeight() / 2));
+				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (playerIdle.getWidth() / 2),
+						player.getBody().getPosition().y * PIXEL_PER_METER - (playerIdle.getHeight() / 2));
 				break;
 			case 1:
 				currentFrame = jumpAnimation.getKeyFrame(stateTime, true);
-				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (jump.getWidth() / 2),
-						player.getBody().getPosition().y * PIXEL_PER_METER - (jump.getHeight() / 2));
+				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (playerJump.getWidth() / 2),
+						player.getBody().getPosition().y * PIXEL_PER_METER - (playerJump.getHeight() / 2));
 				break;
 		}
 		batch.end();
@@ -112,12 +157,14 @@ public class CovidAttack extends ApplicationAdapter {
 	@Override
 	public void dispose() {
 		batch.dispose();
-		jump.dispose();
-		idle.dispose();
+		playerJump.dispose();
+		playerIdle.dispose();
+		enemy1Texture.dispose();
 		box2DDebugRenderer.dispose();
 		world.dispose();
 		tiledMapRenderer.dispose();
 		tiledMap.dispose();
+		//player1.dispose();
 	}
 	private void update() {
 		world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
@@ -156,6 +203,10 @@ public class CovidAttack extends ApplicationAdapter {
 		}
 		player.getBody().setLinearVelocity(horizontalForce * Player.RUN_FORCE, player.getBody().getLinearVelocity().y);
 	}
+	private void enemy1Draw(){
+		batch.draw(enemy1Texture, enemy.getBody1().getPosition().x * PIXEL_PER_METER - (enemy1Texture.getWidth() / 2),
+				enemy.getBody1().getPosition().y * PIXEL_PER_METER - (enemy1Texture.getHeight() / 2));
+	}
 
 	private void playerUpdate(int horizontalForce, boolean isJumping) {
 		if (player.isDead()) {
@@ -167,3 +218,5 @@ public class CovidAttack extends ApplicationAdapter {
 		player.getBody().setLinearVelocity(horizontalForce * Player.RUN_FORCE, player.getBody().getLinearVelocity().y);
 	}
 }
+
+//https://stackoverflow.com/questions/42829931/libgdx-collision-detection-between-sprites

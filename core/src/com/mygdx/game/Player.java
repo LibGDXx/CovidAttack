@@ -10,7 +10,7 @@ public class Player {
     private static final float PLAYER_DENSITY = 1.0f;
     public static final float JUMP_FORCE = 250f;
     public static final float RUN_FORCE = 5f;
-    public static final String PLAYER_IMG_PATH = "Character1.png";
+    public static final String PLAYER_IMG_PATH = "Character-single.png";
     private static final float PLAYER_START_X = 8f;
     private static final float PLAYER_START_Y = 18f;
     private Body body;
