@@ -6,13 +6,13 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class Player {
-    private static final int BOX_SIZE = 32;
-    private static final float PLAYER_DENSITY = 1.0f;
-    public static final float JUMP_FORCE = 250f;
-    public static final float RUN_FORCE = 5f;
+    private static final int BOX_SIZE = 32; //speed of character lower = faster, higher = can't move
+    private static final float PLAYER_DENSITY = 1.0f; //gravity
+    public static final float JUMP_FORCE = 250f; //how high player jumps
+    public static final float RUN_FORCE = 5f; //speed at which player moves horizontally (forward/backward)
     public static final String PLAYER_IMG_PATH = "Character-single.png";
-    private static final float PLAYER_START_X = 8f;
-    private static final float PLAYER_START_Y = 18f;
+    public static final float PLAYER_START_X = 8f; //where player starts x-coordinate. doesn't update
+    public static final float PLAYER_START_Y = 18f; //where player starts y-coordinate. doesn't update
     private Body body;
     private boolean isJumping = false;
     private boolean isDead = false;

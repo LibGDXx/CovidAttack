@@ -18,6 +18,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
+import javax.swing.*;
+
 public class CovidAttack extends ApplicationAdapter {
 	private static final float SCALE = 2.0f;
 	public static final float PIXEL_PER_METER = 32f;
@@ -46,17 +48,17 @@ public class CovidAttack extends ApplicationAdapter {
 	private Texture playerJump;
 	private Texture playerIdle;
 	private Texture enemy1Texture;
-//	private Texture player1;
-//	private Rectangle rectPlayer;
-//	private Rectangle rectEnemy;
-//	private Sprite playerSprite;
-//	private Sprite enemy1;
-//	private float yPosition = -40;
-//	private float player1X;
-//	private float player1Y;
+	private Texture player1;
+	private Rectangle rectPlayer;
+	private Rectangle rectEnemy;
+	private Sprite playerSprite;
+	private Sprite enemy1;
+	private float yPosition = -40;
+	private float player1X;
+	private float player1Y;
 
 	@Override
-	public void create () {
+	public void create() {
 		orthographicCamera = new OrthographicCamera();
 		orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth() / SCALE, Gdx.graphics.getHeight() / SCALE);
 		world = new World(new Vector2(VELOCITY_X, VELOCITY_Y), false);
@@ -98,16 +100,16 @@ public class CovidAttack extends ApplicationAdapter {
 		player = new Player(world);
 		enemy = new Enemy(world);
 
-//		player1 = new Texture(Gdx.files.internal("Character-single.png"));
-//		playerSprite = new Sprite(player1);
-//		player1X = 300;
-//		 player1Y = 0;
-//
-//		enemy1 = new Sprite(new Texture("enemy1.png"));
-//		enemy1.setPosition(260, 580);
-//
-//		rectEnemy = new Rectangle(enemy1.getX(), enemy1.getY(), enemy1.getWidth(), enemy1.getHeight());
-//		rectPlayer = new Rectangle(playerSprite.getX(), playerSprite.getY(), playerSprite.getWidth(), playerSprite.getHeight());
+		player1 = new Texture(Gdx.files.internal("Character-single.png"));
+		playerSprite = new Sprite(player1);
+		player1X = 300;
+		player1Y = 0;
+
+		enemy1 = new Sprite(new Texture("enemy1.png"));
+		enemy1.setPosition(260, 580);
+
+		rectEnemy = new Rectangle(enemy1.getX(), enemy1.getY(), enemy1.getWidth(), enemy1.getHeight());
+		rectPlayer = new Rectangle(playerSprite.getX(), playerSprite.getY(), playerSprite.getWidth(), playerSprite.getHeight());
 
 	}
 	@Override
@@ -121,37 +123,37 @@ public class CovidAttack extends ApplicationAdapter {
 		batch.begin();
 		enemy1Draw();
 
-//		batch.draw(player1, player.getBody().getPosition().x * PIXEL_PER_METER - (player1.getWidth() / 2),
-//				player.getBody().getPosition().y * PIXEL_PER_METER - (player1.getHeight() / 2));
-//		rectPlayer = playerSprite.getBoundingRectangle();
-//		rectEnemy = enemy1.getBoundingRectangle();
-//
-//		boolean isOverlapping = rectPlayer.overlaps(rectEnemy);
-//		if(!isOverlapping){
-//			System.out.println("not overlap");
-//			yPosition = yPosition + (20);
-//		}
-//		else{
-//			world.destroyBody(player.getBody());
-//		}
+		batch.draw(player1, player.getBody().getPosition().x * PIXEL_PER_METER - (player1.getWidth() / 2),
+				player.getBody().getPosition().y * PIXEL_PER_METER - (player1.getHeight() / 2));
+		rectPlayer = playerSprite.getBoundingRectangle();
+		rectEnemy = enemy1.getBoundingRectangle();
 
-		if((player.getBody().getPosition().x == enemy.getBody1().getPosition().x)){
-			world.destroyBody(player.getBody());
-//			world.step(0,0,0);
-//			player.getBody().setActive(false);
+		boolean isOverlapping = false;
+
+		if((player.getBody().getPosition().x) >= (enemy.getBody1().getPosition().x - 2) && (player.getBody().getPosition().x)
+		<= (enemy.getBody1().getPosition().x + 2)){
+			if((player.getBody().getPosition().y) >= (enemy.getBody1().getPosition().y - 2) && (player.getBody().getPosition().y)
+					<= (enemy.getBody1().getPosition().y + 2)) {
+				JOptionPane.showMessageDialog(null, "You Died");
+				isOverlapping = true;
+				if(isOverlapping){
+					System.exit(0);
+					Start.restart();
+				}
+			}
 		}
-		switch(state){
-			default:
-				currentFrame = idleAnimation.getKeyFrame(stateTime, true);
-				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (playerIdle.getWidth() / 2),
-						player.getBody().getPosition().y * PIXEL_PER_METER - (playerIdle.getHeight() / 2));
-				break;
-			case 1:
-				currentFrame = jumpAnimation.getKeyFrame(stateTime, true);
-				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (playerJump.getWidth() / 2),
-						player.getBody().getPosition().y * PIXEL_PER_METER - (playerJump.getHeight() / 2));
-				break;
-		}
+//		switch(state){
+//			default:
+//				currentFrame = idleAnimation.getKeyFrame(stateTime, true);
+//				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (playerIdle.getWidth() / 2),
+//						player.getBody().getPosition().y * PIXEL_PER_METER - (playerIdle.getHeight() / 2));
+//				break;
+//			case 1:
+//				currentFrame = jumpAnimation.getKeyFrame(stateTime, true);
+//				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (playerJump.getWidth() / 2),
+//						player.getBody().getPosition().y * PIXEL_PER_METER - (playerJump.getHeight() / 2));
+//				break;
+//		}
 		batch.end();
 	}
 	@Override
@@ -164,16 +166,16 @@ public class CovidAttack extends ApplicationAdapter {
 		world.dispose();
 		tiledMapRenderer.dispose();
 		tiledMap.dispose();
-		//player1.dispose();
+		player1.dispose();
 	}
-	private void update() {
+	public void update() {
 		world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
 		inputUpdate();
 		cameraUpdate();
 		tiledMapRenderer.setView(orthographicCamera);
 		batch.setProjectionMatrix(orthographicCamera.combined);
 	}
-	private void cameraUpdate() {
+	public void cameraUpdate() {
 		Vector3 position = orthographicCamera.position;
 		position.x = player.getBody().getPosition().x * PIXEL_PER_METER;
 		position.y = player.getBody().getPosition().y * PIXEL_PER_METER;
@@ -184,7 +186,7 @@ public class CovidAttack extends ApplicationAdapter {
 	public void resize(int width, int height) {
 		orthographicCamera.setToOrtho(false, width / SCALE, height / SCALE);
 	}
-	private void inputUpdate() {
+	public void inputUpdate() {
 		int horizontalForce = 0;
 		boolean isJumping = false;
 		if (Gdx.input.isTouched()) {
@@ -203,11 +205,10 @@ public class CovidAttack extends ApplicationAdapter {
 		}
 		player.getBody().setLinearVelocity(horizontalForce * Player.RUN_FORCE, player.getBody().getLinearVelocity().y);
 	}
-	private void enemy1Draw(){
+	public void enemy1Draw(){
 		batch.draw(enemy1Texture, enemy.getBody1().getPosition().x * PIXEL_PER_METER - (enemy1Texture.getWidth() / 2),
 				enemy.getBody1().getPosition().y * PIXEL_PER_METER - (enemy1Texture.getHeight() / 2));
 	}
-
 	private void playerUpdate(int horizontalForce, boolean isJumping) {
 		if (player.isDead()) {
 			world.destroyBody(player.getBody());
@@ -218,5 +219,3 @@ public class CovidAttack extends ApplicationAdapter {
 		player.getBody().setLinearVelocity(horizontalForce * Player.RUN_FORCE, player.getBody().getLinearVelocity().y);
 	}
 }
-
-//https://stackoverflow.com/questions/42829931/libgdx-collision-detection-between-sprites

@@ -3,7 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class Enemy {
-    private static final int BOX_SIZE = 1;
+    private static final int BOX_SIZE = 32;
     private static final float ENEMY_DENSITY = 1.0f;
     public static final float ENEMY_JUMP_FORCE = 250f;
     public static final float ENEMY_RUN_FORCE = 5f;
