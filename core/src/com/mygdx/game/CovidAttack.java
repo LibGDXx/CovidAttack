@@ -24,11 +24,12 @@ public class CovidAttack extends ApplicationAdapter {
 	private static final int POSITION_ITERATIONS = 2;
 	private static final float VELOCITY_Y = -9.85f;
 	private static final float VELOCITY_X = 0f;
-	private static final String MAP_PATH = "map/GameMap.tmx";
+	private static final String MAP_PATH = "map/GameMap.tmx"; //temp game map until levels are completed
 	private OrthographicCamera orthographicCamera;
 	private Box2DDebugRenderer box2DDebugRenderer;
 	private World world;
 	private Player player;
+	private Enemy enemy;
 	private SpriteBatch batch;
 	private OrthogonalTiledMapRenderer tiledMapRenderer;
 	private TiledMap tiledMap;
@@ -40,51 +41,54 @@ public class CovidAttack extends ApplicationAdapter {
 	Animation<TextureRegion> idleAnimation;
 	float stateTime;
 	public static int state;
-	Texture jump;
-	Texture idle;
+	private Texture playerJump;
+	private Texture playerIdle;
+	private Texture enemy1Texture;
 
 	@Override
-	public void create () {
+	public void create() {
 		orthographicCamera = new OrthographicCamera();
 		orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth() / SCALE, Gdx.graphics.getHeight() / SCALE);
 		world = new World(new Vector2(VELOCITY_X, VELOCITY_Y), false);
 		world.setContactListener(new WorldContactListener());
 		batch = new SpriteBatch();
+		enemy1Texture = new Texture(Enemy.ENEMY_IMG_PATH);
+		playerJump = new Texture(Gdx.files.internal("Jumping.png"));
 
-		jump = new Texture(Gdx.files.internal("Jumping.png"));
+		TextureRegion[][] tmp2 = TextureRegion.split(playerJump, playerJump.getWidth() / FRAME_COLS, playerJump.getHeight() / FRAME_ROWS);
 
-		TextureRegion[][] tmp2 = TextureRegion.split(jump, jump.getWidth() / FRAME_COLS, jump.getHeight() / FRAME_ROWS);
-
-		TextureRegion[] jumpFrame1 = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+		TextureRegion[] jumpFrame = new TextureRegion[FRAME_COLS * FRAME_ROWS]; //create texture region for jumping animation
 		int index2 = 0;
+		//accounts for every frame in the player jumping animation
 		for(int i = 0; i < FRAME_ROWS; i++){
 			for(int j = 0; j < FRAME_COLS; j++){
-				jumpFrame1[index2++] = tmp2[i][j];
+				jumpFrame[index2++] = tmp2[i][j];
 			}
 		}
 
-		jumpAnimation = new Animation<TextureRegion>(.10f, jumpFrame1);
+		jumpAnimation = new Animation<TextureRegion>(.10f, jumpFrame); //controls how many frames per second the jumping animation moves at
 
-		idle = new Texture(Gdx.files.internal("Character-idle.png"));
+		playerIdle = new Texture(Gdx.files.internal("Character-idle.png"));
 
-		TextureRegion[][] tmp3 = TextureRegion.split(idle, idle.getWidth() / FRAME_COLS1, idle.getHeight() / FRAME_ROWS1);
+		TextureRegion[][] tmp3 = TextureRegion.split(playerIdle, playerIdle.getWidth() / FRAME_COLS1, playerIdle.getHeight() / FRAME_ROWS1);
 
-		TextureRegion[] idleFrame = new TextureRegion[FRAME_COLS1 * FRAME_ROWS1];
+		TextureRegion[] idleFrame = new TextureRegion[FRAME_COLS1 * FRAME_ROWS1]; //create texture region for idle animation
 		int index3 = 0;
+		//accounts for every frame in the player idle animation
 		for(int i = 0; i < FRAME_ROWS1; i++){
 			for(int j = 0; j < FRAME_COLS1; j++){
 				idleFrame[index3++] = tmp3[i][j];
 			}
 		}
 
-		idleAnimation = new Animation<TextureRegion>(.05f, idleFrame);
+		idleAnimation = new Animation<TextureRegion>(.10f, idleFrame); //controls how many frames per second the idle animation moves at
 
 		box2DDebugRenderer = new Box2DDebugRenderer();
 		tiledMap = new TmxMapLoader().load(MAP_PATH);
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 		MapParser.parseMapLayers(world, tiledMap);
-		player = new Player(world);
-
+		player = new Player(world); //calls the body from Player class, contains physics
+		enemy = new Enemy(world); //calls the body from Enemy class, contains physics
 	}
 	@Override
 	public void render () {
@@ -95,16 +99,34 @@ public class CovidAttack extends ApplicationAdapter {
 		stateTime += Gdx.graphics.getDeltaTime();
 		TextureRegion currentFrame;
 		batch.begin();
+		enemy1Draw();
+
+		boolean isOverlapping = false;
+
+		//this if block controls the player-enemy collision. if the player gets within a 2 block radius of an enemy, the player will die.
+		if((player.getBody().getPosition().x) >= (enemy.getBody1().getPosition().x - 2) && (player.getBody().getPosition().x)
+		<= (enemy.getBody1().getPosition().x + 2)){
+			if((player.getBody().getPosition().y) >= (enemy.getBody1().getPosition().y - 2) && (player.getBody().getPosition().y)
+					<= (enemy.getBody1().getPosition().y + 2)) {
+				isOverlapping = true;
+				if(isOverlapping){
+					Start.restart(); //calls the method which controls the JOptionPanes for player death
+				}
+			}
+		}
+		//checks for the appropriate animation for character depending on its position, which is represented by the state variable.
 		switch(state){
 			default:
+				//if the player is not jumping, the default case is called and the idle animation plays
 				currentFrame = idleAnimation.getKeyFrame(stateTime, true);
-				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (idle.getWidth() / 2),
-				player.getBody().getPosition().y * PIXEL_PER_METER - (idle.getHeight() / 2));
+				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (playerIdle.getWidth() / 2),
+						player.getBody().getPosition().y * PIXEL_PER_METER - (playerIdle.getHeight() / 2));
 				break;
+				//if the player is jumping, case 1 is called and the jumping animation plays
 			case 1:
 				currentFrame = jumpAnimation.getKeyFrame(stateTime, true);
-				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (jump.getWidth() / 2),
-						player.getBody().getPosition().y * PIXEL_PER_METER - (jump.getHeight() / 2));
+				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (playerJump.getWidth() / 2),
+						player.getBody().getPosition().y * PIXEL_PER_METER - (playerJump.getHeight() / 2));
 				break;
 		}
 		batch.end();
@@ -112,21 +134,23 @@ public class CovidAttack extends ApplicationAdapter {
 	@Override
 	public void dispose() {
 		batch.dispose();
-		jump.dispose();
-		idle.dispose();
+		playerJump.dispose();
+		playerIdle.dispose();
+		enemy1Texture.dispose();
 		box2DDebugRenderer.dispose();
 		world.dispose();
 		tiledMapRenderer.dispose();
 		tiledMap.dispose();
 	}
-	private void update() {
+	public void update() {
 		world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
 		inputUpdate();
 		cameraUpdate();
 		tiledMapRenderer.setView(orthographicCamera);
 		batch.setProjectionMatrix(orthographicCamera.combined);
 	}
-	private void cameraUpdate() {
+	//updates the camera to the correct position when player moves
+	public void cameraUpdate() {
 		Vector3 position = orthographicCamera.position;
 		position.x = player.getBody().getPosition().x * PIXEL_PER_METER;
 		position.y = player.getBody().getPosition().y * PIXEL_PER_METER;
@@ -137,7 +161,8 @@ public class CovidAttack extends ApplicationAdapter {
 	public void resize(int width, int height) {
 		orthographicCamera.setToOrtho(false, width / SCALE, height / SCALE);
 	}
-	private void inputUpdate() {
+	//controls the movement of the player depending on user clicks of the mouse
+	public void inputUpdate() {
 		int horizontalForce = 0;
 		boolean isJumping = false;
 		if (Gdx.input.isTouched()) {
@@ -151,12 +176,16 @@ public class CovidAttack extends ApplicationAdapter {
 			}
 			if (touchPos.y / PIXEL_PER_METER > player.getBody().getPosition().y && !player.isJumping()) {
 				player.getBody().applyForceToCenter(0, Player.JUMP_FORCE, false);
-				state = 1;
+				state = 1; //if the user isn't touching the ground, it must be jumping, so state = 1 which allows for jumping animation
 			}
 		}
 		player.getBody().setLinearVelocity(horizontalForce * Player.RUN_FORCE, player.getBody().getLinearVelocity().y);
 	}
-
+	//draws the sprite batch of enemy #1
+	public void enemy1Draw(){
+		batch.draw(enemy1Texture, enemy.getBody1().getPosition().x * PIXEL_PER_METER - (enemy1Texture.getWidth() / 2),
+				enemy.getBody1().getPosition().y * PIXEL_PER_METER - (enemy1Texture.getHeight() / 2));
+	}
 	private void playerUpdate(int horizontalForce, boolean isJumping) {
 		if (player.isDead()) {
 			world.destroyBody(player.getBody());
