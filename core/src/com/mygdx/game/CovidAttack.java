@@ -48,14 +48,6 @@ public class CovidAttack extends ApplicationAdapter {
 	private Texture playerJump;
 	private Texture playerIdle;
 	private Texture enemy1Texture;
-	private Texture player1;
-	private Rectangle rectPlayer;
-	private Rectangle rectEnemy;
-	private Sprite playerSprite;
-	private Sprite enemy1;
-	private float yPosition = -40;
-	private float player1X;
-	private float player1Y;
 
 	@Override
 	public void create() {
@@ -100,16 +92,6 @@ public class CovidAttack extends ApplicationAdapter {
 		player = new Player(world);
 		enemy = new Enemy(world);
 
-		player1 = new Texture(Gdx.files.internal("Character-single.png"));
-		playerSprite = new Sprite(player1);
-		player1X = 300;
-		player1Y = 0;
-
-		enemy1 = new Sprite(new Texture("enemy1.png"));
-		enemy1.setPosition(260, 580);
-
-		rectEnemy = new Rectangle(enemy1.getX(), enemy1.getY(), enemy1.getWidth(), enemy1.getHeight());
-		rectPlayer = new Rectangle(playerSprite.getX(), playerSprite.getY(), playerSprite.getWidth(), playerSprite.getHeight());
 
 	}
 	@Override
@@ -123,10 +105,8 @@ public class CovidAttack extends ApplicationAdapter {
 		batch.begin();
 		enemy1Draw();
 
-		batch.draw(player1, player.getBody().getPosition().x * PIXEL_PER_METER - (player1.getWidth() / 2),
-				player.getBody().getPosition().y * PIXEL_PER_METER - (player1.getHeight() / 2));
-		rectPlayer = playerSprite.getBoundingRectangle();
-		rectEnemy = enemy1.getBoundingRectangle();
+//		batch.draw(player1, player.getBody().getPosition().x * PIXEL_PER_METER - (player1.getWidth() / 2),
+//				player.getBody().getPosition().y * PIXEL_PER_METER - (player1.getHeight() / 2));
 
 		boolean isOverlapping = false;
 
@@ -134,26 +114,24 @@ public class CovidAttack extends ApplicationAdapter {
 		<= (enemy.getBody1().getPosition().x + 2)){
 			if((player.getBody().getPosition().y) >= (enemy.getBody1().getPosition().y - 2) && (player.getBody().getPosition().y)
 					<= (enemy.getBody1().getPosition().y + 2)) {
-				JOptionPane.showMessageDialog(null, "You Died");
 				isOverlapping = true;
 				if(isOverlapping){
-					System.exit(0);
 					Start.restart();
 				}
 			}
 		}
-//		switch(state){
-//			default:
-//				currentFrame = idleAnimation.getKeyFrame(stateTime, true);
-//				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (playerIdle.getWidth() / 2),
-//						player.getBody().getPosition().y * PIXEL_PER_METER - (playerIdle.getHeight() / 2));
-//				break;
-//			case 1:
-//				currentFrame = jumpAnimation.getKeyFrame(stateTime, true);
-//				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (playerJump.getWidth() / 2),
-//						player.getBody().getPosition().y * PIXEL_PER_METER - (playerJump.getHeight() / 2));
-//				break;
-//		}
+		switch(state){
+			default:
+				currentFrame = idleAnimation.getKeyFrame(stateTime, true);
+				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (playerIdle.getWidth() / 2),
+						player.getBody().getPosition().y * PIXEL_PER_METER - (playerIdle.getHeight() / 2));
+				break;
+			case 1:
+				currentFrame = jumpAnimation.getKeyFrame(stateTime, true);
+				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (playerJump.getWidth() / 2),
+						player.getBody().getPosition().y * PIXEL_PER_METER - (playerJump.getHeight() / 2));
+				break;
+		}
 		batch.end();
 	}
 	@Override
@@ -166,7 +144,6 @@ public class CovidAttack extends ApplicationAdapter {
 		world.dispose();
 		tiledMapRenderer.dispose();
 		tiledMap.dispose();
-		player1.dispose();
 	}
 	public void update() {
 		world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);

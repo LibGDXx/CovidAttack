@@ -1,21 +1,26 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.ApplicationAdapter;
+
 import javax.swing.*;
 
 public class Start {
 
     public static void restart(){
 
-//        CovidAttack c = new CovidAttack();
-//        c.create();
-//        c.render();
-//        c.dispose();
-//        c.update();
-//        c.cameraUpdate();
-//        c.resize(500, 500);
-//        c.inputUpdate();
-//        c.enemy1Draw();
-
-        JOptionPane.showConfirmDialog(null, "Would you like to play again?");
+        int selection;
+        boolean isYes;
+        selection = JOptionPane.showConfirmDialog(null, "You died! Would you like to play again?");
+        isYes = (selection == JOptionPane.YES_OPTION);
+        boolean isNo = (selection == JOptionPane.NO_OPTION);
+        if(isYes == true){
+           //Restart game. don't know how yet.
+            CovidAttack c = new CovidAttack();
+            c.create();
+        }
+        else if(isNo){
+            System.exit(0);
+//            JOptionPane.showConfirmDialog(null, "Bye");
+        }
     }
 }
