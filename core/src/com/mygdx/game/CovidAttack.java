@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -16,9 +15,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class CovidAttack extends ApplicationAdapter {
 	private static final float SCALE = 2.0f;
@@ -32,6 +29,7 @@ public class CovidAttack extends ApplicationAdapter {
 	private OrthographicCamera orthographicCamera;
 	private Box2DDebugRenderer box2DDebugRenderer;
 	private World world;
+	private World menu;
 	private Player player;
 	private SpriteBatch batch;
 	private OrthogonalTiledMapRenderer tiledMapRenderer;
@@ -50,6 +48,7 @@ public class CovidAttack extends ApplicationAdapter {
 	private Texture start;
 	private Texture stop;
 	public BitmapFont font;
+	private GameScreen menuScreen;
 
 
 
@@ -57,6 +56,8 @@ public class CovidAttack extends ApplicationAdapter {
 	public void create () {
 		home = new Texture("C:\\Users\\Joey Chalupa\\Desktop\\Java\\CovidAttack\\android\\assets\\TitleScreen.png");
 		start = new Texture("C:\\Users\\Joey Chalupa\\Desktop\\Java\\CovidAttack\\android\\assets\\new start.png");
+
+
 
 		orthographicCamera = new OrthographicCamera();
 		orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth() / SCALE, Gdx.graphics.getHeight() / SCALE);
@@ -100,18 +101,14 @@ public class CovidAttack extends ApplicationAdapter {
 		player = new Player(world);
 
 	}
+
 	@Override
-	public void render (SpriteBatch sb) {
-		super.render();
-		sb.begin();
-		sb.draw(home, 0, 0, 500, 500);
-		sb.draw(start,  250-(start.getWidth() / 2), 250);
-		sb.end();
-
-
+	public void render () {
 		update();
 		Gdx.gl.glClearColor(0.5f, 0.8f, 1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		super.render();
 		tiledMapRenderer.render();
 		stateTime += Gdx.graphics.getDeltaTime();
 		TextureRegion currentFrame;
@@ -129,21 +126,6 @@ public class CovidAttack extends ApplicationAdapter {
 				break;
 		}
 		batch.end();
-		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-		camera.update();
-		game.batch.setProjectionMatrix(camera.combined);
-
-		game.batch.begin();
-		game.font.draw(game.batch, "Welcome to Covid Attack!!! ", 100, 150);
-		game.font.draw(game.batch, "Tap anywhere to begin!", 100, 100);
-		game.batch.end();
-
-		if (Gdx.input.isTouched()) {
-			game.setScreen(new GameScreen(game));
-			dispose();
-		}
 	}
 	@Override
 	public void dispose() {
@@ -155,6 +137,7 @@ public class CovidAttack extends ApplicationAdapter {
 		world.dispose();
 		tiledMapRenderer.dispose();
 		tiledMap.dispose();
+		super.dispose();
 	}
 	private void update() {
 		world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
@@ -173,6 +156,8 @@ public class CovidAttack extends ApplicationAdapter {
 	@Override
 	public void resize(int width, int height) {
 		orthographicCamera.setToOrtho(false, width / SCALE, height / SCALE);
+
+		super.resize(width, height);
 	}
 	private void inputUpdate() {
 		int horizontalForce = 0;
