@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class MapParser {
+public class MapParser<enemy1> {
     private static final String MAP_LAYER_NAME_GROUND = "ground";
     private static final String MAP_LAYER_NAME_BOUNDS = "bounds";
     private static final String MAP_LAYER_NAME_DANGERS = "dangers";
@@ -40,6 +40,7 @@ public class MapParser {
             worldVerticies[i] = new Vector2(vertices[i * 2] / CovidAttack.PIXEL_PER_METER,
                     vertices[i * 2 + 1] / CovidAttack.PIXEL_PER_METER);
         }
+
         ChainShape cs = new ChainShape();
         cs.createChain(worldVerticies);
         return cs;
