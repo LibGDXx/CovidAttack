@@ -16,6 +16,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
+import javax.swing.*;
+
 public class CovidAttack extends ApplicationAdapter {
 	private static final float SCALE = 2.0f;
 	public static final float PIXEL_PER_METER = 32f;
@@ -44,6 +46,7 @@ public class CovidAttack extends ApplicationAdapter {
 	private Texture playerJump;
 	private Texture playerIdle;
 	private Texture enemy1Texture;
+	private double enemyRadius = 2.0;
 
 	@Override
 	public void create() {
@@ -104,13 +107,13 @@ public class CovidAttack extends ApplicationAdapter {
 		boolean isOverlapping = false;
 
 		//this if block controls the player-enemy collision. if the player gets within a 2 block radius of an enemy, the player will die.
-		if((player.getBody().getPosition().x) >= (enemy.getBody1().getPosition().x - 2) && (player.getBody().getPosition().x)
-		<= (enemy.getBody1().getPosition().x + 2)){
-			if((player.getBody().getPosition().y) >= (enemy.getBody1().getPosition().y - 2) && (player.getBody().getPosition().y)
-					<= (enemy.getBody1().getPosition().y + 2)) {
+		if((player.getBody().getPosition().x) >= (enemy.getBody1().getPosition().x - enemyRadius) && (player.getBody().getPosition().x)
+		<= (enemy.getBody1().getPosition().x + enemyRadius)){
+			if((player.getBody().getPosition().y) >= (enemy.getBody1().getPosition().y - enemyRadius) && (player.getBody().getPosition().y)
+					<= (enemy.getBody1().getPosition().y + enemyRadius)) {
 				isOverlapping = true;
 				if(isOverlapping){
-					Start.restart(); //calls the method which controls the JOptionPanes for player death
+					Die.dieMessage(); //calls the method which controls the JOptionPanes for player death
 				}
 			}
 		}
