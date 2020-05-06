@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="56" height="37" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="3">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="56" height="37" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="4">
  <tileset firstgid="1" source="HospitalWideView.tsx"/>
  <layer id="1" name="tiles" width="56" height="37">
   <data encoding="base64" compression="zlib">
@@ -11,9 +11,12 @@
    <polyline points="-893.805,451.622 890.905,454.365"/>
   </object>
  </objectgroup>
- <objectgroup id="3" name="bounds">
+ <objectgroup id="3" name="bounds" offsetx="2.97058" offsety="1.48529">
   <object id="2" name="1" x="1054.55" y="736.364">
    <polyline points="-1039.39,345.455 -1037.03,-725.848 723.224,-723.167 719.83,159.5"/>
+  </object>
+  <object id="3" x="17.8235" y="429.248">
+   <polyline points="0,0 1774.92,1.48529"/>
   </object>
  </objectgroup>
 </map>
