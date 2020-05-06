@@ -19,7 +19,7 @@ public class DesktopLauncher {
 				"CovidAttack", JOptionPane.YES_NO_OPTION);
 		boolean isYes = (selection == JOptionPane.YES_OPTION);
 		boolean isNo = (selection == JOptionPane.NO_OPTION);
-		boolean isPlay = (selection == JOptionPane.DEFAULT_OPTION);
+		boolean isPlay = (selection == JOptionPane.YES_OPTION);
 		if(isYes == true){
 			new LwjglApplication(new CovidAttack(), config);
 		}

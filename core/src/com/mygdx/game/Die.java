@@ -17,11 +17,9 @@ public class Die {
 
         }
         else if(isNo){
+            boolean isPlay = (selection == JOptionPane.DEFAULT_OPTION);
+            JOptionPane.showMessageDialog(null, "Bye", "CovidAttack", JOptionPane.PLAIN_MESSAGE);
             System.exit(0);
-            //JOptionPane.showMessageDialog(null, "Bye");
-        }
-        else{
-            //cancel button
         }
     }
 }
