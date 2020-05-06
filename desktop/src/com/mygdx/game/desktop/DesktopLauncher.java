@@ -6,13 +6,11 @@ import com.mygdx.game.CovidAttack;
 
 import javax.swing.ImageIcon;
 import javax.swing.*;
-//import com.mygdx.game.Start;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		ImageIcon title = new ImageIcon("C:\\Users\\Joey Chalupa\\Desktop\\Java\\CovidAttack\\android\\assets\\TitleScreen.png");
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		//		new LwjglApplication(new Start(), config);
 		config.width = 500;
 		config.height = 500;
 		config.title = "CovidAttack";
