@@ -26,7 +26,7 @@ public class CovidAttack extends ApplicationAdapter {
 	private static final int POSITION_ITERATIONS = 2;
 	private static final float VELOCITY_Y = -9.85f;
 	private static final float VELOCITY_X = 0f;
-	private static final String MAP_PATH = "map/GameMap.tmx"; //temp game map until levels are completed
+	private static final String MAP_PATH = "map/Hospital.tmx"; //temp game map until levels are completed
 	private OrthographicCamera orthographicCamera;
 	private Box2DDebugRenderer box2DDebugRenderer;
 	private World world;
