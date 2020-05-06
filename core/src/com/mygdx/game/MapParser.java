@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class MapParser<enemy1> {
+public class MapParser {
     private static final String MAP_LAYER_NAME_GROUND = "ground";
     private static final String MAP_LAYER_NAME_BOUNDS = "bounds";
     private static final String MAP_LAYER_NAME_DANGERS = "dangers";

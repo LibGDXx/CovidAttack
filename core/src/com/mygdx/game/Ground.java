@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class Ground {
-    private static final float DENSITY = 1.0f;
+    private static final float DENSITY = 100f;
 
     public Ground(World world, Shape shape) {
         Body body;
