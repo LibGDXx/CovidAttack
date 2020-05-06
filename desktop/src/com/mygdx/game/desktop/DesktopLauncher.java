@@ -9,7 +9,7 @@ import javax.swing.*;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		ImageIcon title = new ImageIcon("C:\\Users\\Joey Chalupa\\Desktop\\Java\\CovidAttack\\android\\assets\\TitleScreen.png");
+		ImageIcon title = new ImageIcon("C:\\Users\\Meghan\\Desktop\\Forked\\CovidAttack\\android\\assets\\TitleScreen.png");
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = 500;
 		config.height = 500;
