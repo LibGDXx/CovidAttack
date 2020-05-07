@@ -45,6 +45,7 @@ public class CovidAttack extends ApplicationAdapter {
 	private Texture enemy3Texture;
 	private double enemyRadius = 2;
 	private int levelNum = 1;
+	boolean isOverlapping = false;
 
 	@Override
 	public void create() {
@@ -57,7 +58,7 @@ public class CovidAttack extends ApplicationAdapter {
 		enemy2Texture = new Texture(Enemy2.ENEMY_IMG_PATH2);
 		enemy3Texture = new Texture(Enemy3.ENEMY_IMG_PATH3);
 
-		playerJump = new Texture(Gdx.files.internal("Jumping.png"));
+		playerJump = new Texture(Gdx.files.internal("Jumping.png")); //the sprite sheet used for jumping animation
 
 		TextureRegion[][] tmp2 = TextureRegion.split(playerJump, playerJump.getWidth() / FRAME_COLS, playerJump.getHeight() / FRAME_ROWS);
 
@@ -72,7 +73,7 @@ public class CovidAttack extends ApplicationAdapter {
 
 		jumpAnimation = new Animation<TextureRegion>(.10f, jumpFrame); //controls how many frames per second the jumping animation moves at
 
-		playerIdle = new Texture(Gdx.files.internal("Character-idle.png"));
+		playerIdle = new Texture(Gdx.files.internal("Character-idle.png")); //the sprite sheet used for idle animation
 
 		TextureRegion[][] tmp3 = TextureRegion.split(playerIdle, playerIdle.getWidth() / FRAME_COLS1, playerIdle.getHeight() / FRAME_ROWS1);
 
@@ -106,41 +107,11 @@ public class CovidAttack extends ApplicationAdapter {
 		stateTime += Gdx.graphics.getDeltaTime();
 		TextureRegion currentFrame;
 		batch.begin();
-		drawEnemies();
-
-		boolean isOverlapping = false;
-
-		//this if block controls the player-enemy collision. if the player gets within a 2 block radius of an enemy, the player will die.
-		if((player.getBody().getPosition().x) >= (enemy.getBody1().getPosition().x - enemyRadius) && (player.getBody().getPosition().x)
-		<= (enemy.getBody1().getPosition().x + enemyRadius)){
-			if((player.getBody().getPosition().y) >= (enemy.getBody1().getPosition().y - enemyRadius) && (player.getBody().getPosition().y)
-					<= (enemy.getBody1().getPosition().y + enemyRadius)) {
-				isOverlapping = true;
-				if(isOverlapping) {
-					Die.dieMessage(); //calls the method which controls the JOptionPanes for player death
-				}
-			}
-		}
-		if((player.getBody().getPosition().x) >= (enemy2.getBody2().getPosition().x - enemyRadius) && (player.getBody().getPosition().x)
-				<= (enemy2.getBody2().getPosition().x + enemyRadius)){
-			if((player.getBody().getPosition().y) >= (enemy2.getBody2().getPosition().y - enemyRadius) && (player.getBody().getPosition().y)
-					<= (enemy2.getBody2().getPosition().y + enemyRadius)) {
-				isOverlapping = true;
-				if(isOverlapping) {
-					Die.dieMessage(); //calls the method which controls the JOptionPanes for player death
-				}
-			}
-		}
-		if((player.getBody().getPosition().x) >= (enemy3.getBody3().getPosition().x - enemyRadius) && (player.getBody().getPosition().x)
-				<= (enemy3.getBody3().getPosition().x + enemyRadius)) {
-			if((player.getBody().getPosition().y) >= (enemy3.getBody3().getPosition().y - enemyRadius) && (player.getBody().getPosition().y)
-					<= (enemy3.getBody3().getPosition().y + enemyRadius)) {
-				isOverlapping = true;
-				if(isOverlapping) {
-					Die.dieMessage(); //calls the method which controls the JOptionPanes for player death
-				}
-			}
-		}
+		enemyDraw();
+		enemy1Radius();
+		enemy2Radius();
+		enemy3Radius();
+    
 		//checks for the appropriate animation for character depending on its position, which is represented by the state variable.
 		switch(state) {
 			default:
@@ -232,9 +203,9 @@ public class CovidAttack extends ApplicationAdapter {
 		}
 		player.getBody().setLinearVelocity(horizontalForce * Player.RUN_FORCE, player.getBody().getLinearVelocity().y);
 	}
+	//draws the sprite batch for all enemies
+	public void enemyDraw(){
 
-	//draws sprite batches of all enemies
-	public void drawEnemies() {
 		batch.draw(enemy1Texture, enemy.getBody1().getPosition().x * PIXEL_PER_METER - (enemy1Texture.getWidth() / 2),
 				enemy.getBody1().getPosition().y * PIXEL_PER_METER - (enemy1Texture.getHeight() / 2));
 		batch.draw(enemy2Texture, enemy2.getBody2().getPosition().x * PIXEL_PER_METER - (enemy2Texture.getWidth() / 2),
@@ -242,15 +213,43 @@ public class CovidAttack extends ApplicationAdapter {
 		batch.draw(enemy3Texture, enemy3.getBody3().getPosition().x * PIXEL_PER_METER - (enemy3Texture.getWidth() / 2),
 				enemy3.getBody3().getPosition().y * PIXEL_PER_METER - (enemy3Texture.getHeight() / 2));
 	}
-
-	private void playerUpdate(int horizontalForce, boolean isJumping) {
-		if (player.isDead()) {
-			world.destroyBody(player.getBody());
-			player = new Player(world);
+	//controls the player-enemy collision. if the player gets within a 2 block radius of an enemy, the player will die.
+	public void enemy1Radius(){
+		if((player.getBody().getPosition().x) >= (enemy.getBody1().getPosition().x - enemyRadius) && (player.getBody().getPosition().x)
+				<= (enemy.getBody1().getPosition().x + enemyRadius)){
+			if((player.getBody().getPosition().y) >= (enemy.getBody1().getPosition().y - enemyRadius) && (player.getBody().getPosition().y)
+					<= (enemy.getBody1().getPosition().y + enemyRadius)) {
+				isOverlapping = true;
+				if(isOverlapping){
+					Die.dieMessage(); //calls the method which controls the JOptionPanes for player death
+				}
+			}
 		}
-		if (isJumping) {
-			player.getBody().applyForceToCenter(0, Player.JUMP_FORCE, false);
+	}
+	//controls the player-enemy collision. if the player gets within a 2 block radius of an enemy, the player will die.
+	public void enemy2Radius(){
+		if((player.getBody().getPosition().x) >= (enemy2.getBody2().getPosition().x - enemyRadius) && (player.getBody().getPosition().x)
+				<= (enemy2.getBody2().getPosition().x + enemyRadius)){
+			if((player.getBody().getPosition().y) >= (enemy2.getBody2().getPosition().y - enemyRadius) && (player.getBody().getPosition().y)
+					<= (enemy2.getBody2().getPosition().y + enemyRadius)) {
+				isOverlapping = true;
+				if(isOverlapping){
+					Die.dieMessage(); //calls the method which controls the JOptionPanes for player death
+				}
+			}
 		}
-		player.getBody().setLinearVelocity(horizontalForce * Player.RUN_FORCE, player.getBody().getLinearVelocity().y);
+	}
+	//controls the player-enemy collision. if the player gets within a 2 block radius of an enemy, the player will die.
+	public void enemy3Radius(){
+		if((player.getBody().getPosition().x) >= (enemy3.getBody3().getPosition().x - enemyRadius) && (player.getBody().getPosition().x)
+				<= (enemy3.getBody3().getPosition().x + enemyRadius)){
+			if((player.getBody().getPosition().y) >= (enemy3.getBody3().getPosition().y - enemyRadius) && (player.getBody().getPosition().y)
+					<= (enemy3.getBody3().getPosition().y + enemyRadius)) {
+				isOverlapping = true;
+				if(isOverlapping){
+					Die.dieMessage(); //calls the method which controls the JOptionPanes for player death
+				}
+			}
+		}
 	}
 }
