@@ -51,6 +51,7 @@ public class CovidAttack extends ApplicationAdapter {
 	private Texture enemy2Texture;
 	private Texture enemy3Texture;
 	private double enemyRadius = 2;
+	private int levelNum = 1;
 
 	@Override
 	public void create() {
@@ -185,9 +186,19 @@ public class CovidAttack extends ApplicationAdapter {
 		batch.setProjectionMatrix(orthographicCamera.combined);
 	}
 	public void levelUpdate() {
-		if (player.getBody().getPosition().x >= 13 && player.getBody().getPosition().x <= 14 && player.getBody().getPosition().y >= 4 && player.getBody().getPosition().y <= 15) {
-			tiledMapRenderer = new OrthogonalTiledMapRenderer(new TmxMapLoader().load("map/City.tmx"));
-			player = new Player(world); //calls the body from Player class, contains physics
+		if (levelNum == 1) {
+			if (player.getBody().getPosition().x >= 13 && player.getBody().getPosition().x <= 14 && player.getBody().getPosition().y >= 4 && player.getBody().getPosition().y <= 5) {
+				tiledMapRenderer = new OrthogonalTiledMapRenderer(new TmxMapLoader().load("map/City.tmx"));
+				player = new Player(world); //calls the body from Player class, contains physics
+				levelNum++;
+			}
+		}
+		else if (levelNum == 2) {
+			if (player.getBody().getPosition().x >= 22 && player.getBody().getPosition().x <= 23 && player.getBody().getPosition().y >= 4 && player.getBody().getPosition().y <= 5) {
+				tiledMapRenderer = new OrthogonalTiledMapRenderer(new TmxMapLoader().load("map/Neighborhood.tmx"));
+				player = new Player(world); //calls the body from Player class, contains physics
+				levelNum++;
+			}
 		}
 		System.out.println(player.getBody().getPosition().x + " " + player.getBody().getPosition().y);
 	}
