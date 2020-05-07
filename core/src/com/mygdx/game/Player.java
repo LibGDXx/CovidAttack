@@ -10,7 +10,7 @@ public class Player {
     private static final float PLAYER_DENSITY = 0.8f; //gravity
     public static final float JUMP_FORCE = 250f; //how high player jumps
     public static final float RUN_FORCE = 5f; //speed at which player moves horizontally (forward/backward)
-    public static final String PLAYER_IMG_PATH = "Character-single.png";
+    public static final String PLAYER_IMG_PATH = "Character1.png";
     public static final float PLAYER_START_X = 8f; //where player starts x-coordinate. doesn't update
     public static final float PLAYER_START_Y = 10f; //where player starts y-coordinate. doesn't update
     private Body body; //the body of the player where physics is applied to

@@ -50,7 +50,7 @@ public class CovidAttack extends ApplicationAdapter {
 	private Texture enemy1Texture;
 	private Texture enemy2Texture;
 	private Texture enemy3Texture;
-	private double enemyRadius = 1.1;
+	private double enemyRadius = 2;
 
 	@Override
 	public void create() {
@@ -122,6 +122,26 @@ public class CovidAttack extends ApplicationAdapter {
 		<= (enemy.getBody1().getPosition().x + enemyRadius)){
 			if((player.getBody().getPosition().y) >= (enemy.getBody1().getPosition().y - enemyRadius) && (player.getBody().getPosition().y)
 					<= (enemy.getBody1().getPosition().y + enemyRadius)) {
+				isOverlapping = true;
+				if(isOverlapping){
+					Die.dieMessage(); //calls the method which controls the JOptionPanes for player death
+				}
+			}
+		}
+		if((player.getBody().getPosition().x) >= (enemy2.getBody2().getPosition().x - enemyRadius) && (player.getBody().getPosition().x)
+				<= (enemy2.getBody2().getPosition().x + enemyRadius)){
+			if((player.getBody().getPosition().y) >= (enemy2.getBody2().getPosition().y - enemyRadius) && (player.getBody().getPosition().y)
+					<= (enemy2.getBody2().getPosition().y + enemyRadius)) {
+				isOverlapping = true;
+				if(isOverlapping){
+					Die.dieMessage(); //calls the method which controls the JOptionPanes for player death
+				}
+			}
+		}
+		if((player.getBody().getPosition().x) >= (enemy3.getBody3().getPosition().x - enemyRadius) && (player.getBody().getPosition().x)
+				<= (enemy3.getBody3().getPosition().x + enemyRadius)){
+			if((player.getBody().getPosition().y) >= (enemy3.getBody3().getPosition().y - enemyRadius) && (player.getBody().getPosition().y)
+					<= (enemy3.getBody3().getPosition().y + enemyRadius)) {
 				isOverlapping = true;
 				if(isOverlapping){
 					Die.dieMessage(); //calls the method which controls the JOptionPanes for player death
