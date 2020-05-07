@@ -4,19 +4,19 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.mygdx.game.CovidAttack;
 
+import javax.swing.ImageIcon;
 import javax.swing.*;
-//import com.mygdx.game.Start;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
+		ImageIcon title = new ImageIcon("C:\\Users\\Meghan\\Desktop\\Forked\\CovidAttack\\android\\assets\\TitleScreen.png"); //change this path to whatever the absolute path of TitleScreen.png is on your computer
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		//		new LwjglApplication(new Start(), config);
 		config.width = 500;
 		config.height = 500;
 		config.title = "CovidAttack";
 
-		int selection = JOptionPane.showConfirmDialog(null, "Would you like to play CovidAttack?",
-				"CovidAttack", JOptionPane.YES_NO_OPTION);
+		int selection = JOptionPane.showConfirmDialog(null, title,
+				"CovidAttack",   JOptionPane.YES_NO_OPTION);
 		boolean isYes = (selection == JOptionPane.YES_OPTION);
 		boolean isNo = (selection == JOptionPane.NO_OPTION);
 		boolean isPlay = (selection == JOptionPane.YES_OPTION);
@@ -24,7 +24,7 @@ public class DesktopLauncher {
 			new LwjglApplication(new CovidAttack(), config);
 		}
 		else if(isNo == true){
-			JOptionPane.showMessageDialog(null, "You have no choice.", "CovidAttack", JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Bye!", "CovidAttack", JOptionPane.PLAIN_MESSAGE);
 			if(isPlay ==  true){
 				new LwjglApplication(new CovidAttack(), config);
 			}
