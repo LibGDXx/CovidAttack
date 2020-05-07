@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="left-up" width="150" height="74" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="12">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="left-up" width="150" height="74" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="13">
  <tileset firstgid="1" source="Neighborhood.tsx"/>
  <tileset firstgid="11251" source="Platform Block.tsx"/>
  <layer id="1" name="tiles" width="150" height="74">
@@ -9,13 +9,10 @@
  </layer>
  <objectgroup id="2" name="ground">
   <object id="1" x="-4" y="1070">
-   <polyline points="-152,4 2404,2 2402,-1176"/>
+   <polyline points="-14,4 2404,2"/>
   </object>
  </objectgroup>
  <objectgroup id="3" name="bounds">
-  <object id="2" x="-2" y="1074">
-   <polyline points="0,106 2,-1074 2544,-1074"/>
-  </object>
   <object id="3" x="258.667" y="1073.33">
    <polyline points="0,0 0,-249.333 41.3333,-249.333 42.6667,-266.667 57.3333,-266.667 58.6667,-285.333 76,-285.333 77.3333,-301.333 97.3333,-301.333 97.3333,-321.333 114.667,-321.333 116,-341.333 133.333,-341.333 133.333,-358.667 189.333,-358.667 189.333,-414.667 173.333,-414.667 173.333,-434.667 190.667,-434.667 190.667,-452 208,-452 208,-470.667 225.333,-470.667 225.333,-490.667 248,-490.667 248,-510.667 265.333,-510.667 265.333,-525.333 284,-525.333 284,-546.667 432,-548 432,-526.667 453.333,-526.667 453.333,-509.333 472,-509.333 472,-492 492,-492 492,-472 506.667,-472 506.667,-453.333 526.667,-453.333 526.667,-433.333 548,-433.333 548,-414.667 510.667,-414.667 510.667,-358.667 698.667,-360 698.667,-340 717.333,-340 717.333,-321.333 733.333,-321.333 733.333,-301.333 752,-301.333 752,-285.333 772,-285.333 772,-265.333 789.333,-265.333 789.333,-246.667 809.333,-246.667 809.333,-225.333 828,-224 828,-1.33333"/>
   </object>
@@ -39,6 +36,9 @@
   </object>
   <object id="11" x="1391" y="944">
    <polyline points="0,0 0,-50 162,-50 162,0"/>
+  </object>
+  <object id="12" name="1" x="1271.58" y="735.455">
+   <polyline points="-1257.39,365.455 -1259.03,-721.848 1113.22,-723.167 1111.83,366.5"/>
   </object>
  </objectgroup>
 </map>
