@@ -9,7 +9,7 @@
  <hr size = "1">
   
  <h3> UML Diagram </h3>
-  
+  ![classDiagram1](https://user-images.githubusercontent.com/49411343/81308580-8ebc3c00-9047-11ea-87ec-a0cf208597e8.PNG)
  <hr size = "1">
   
  <h3> Sequence Diagram </h3>
