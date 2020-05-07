@@ -32,13 +32,15 @@ public class CovidAttack extends ApplicationAdapter {
 	private World world;
 	private Player player;
 	private Enemy enemy;
+	private Enemy2 enemy2;
+	private Enemy3 enemy3;
 	private SpriteBatch batch;
 	private OrthogonalTiledMapRenderer tiledMapRenderer;
 	private TiledMap tiledMap;
 	private static final int FRAME_COLS = 2;
 	private static final int FRAME_ROWS = 2;
-	private static final int FRAME_ROWS1 = 2;
 	private static final int FRAME_COLS1 = 2;
+	private static final int FRAME_ROWS1 = 2;
 	Animation<TextureRegion> jumpAnimation;
 	Animation<TextureRegion> idleAnimation;
 	float stateTime;
@@ -46,7 +48,9 @@ public class CovidAttack extends ApplicationAdapter {
 	private Texture playerJump;
 	private Texture playerIdle;
 	private Texture enemy1Texture;
-	private double enemyRadius = 2.0;
+	private Texture enemy2Texture;
+	private Texture enemy3Texture;
+	private double enemyRadius = 1.1;
 
 	@Override
 	public void create() {
@@ -56,6 +60,9 @@ public class CovidAttack extends ApplicationAdapter {
 		world.setContactListener(new WorldContactListener());
 		batch = new SpriteBatch();
 		enemy1Texture = new Texture(Enemy.ENEMY_IMG_PATH);
+		enemy2Texture = new Texture(Enemy2.ENEMY_IMG_PATH2);
+		enemy3Texture = new Texture(Enemy3.ENEMY_IMG_PATH3);
+
 		playerJump = new Texture(Gdx.files.internal("Jumping.png"));
 
 		TextureRegion[][] tmp2 = TextureRegion.split(playerJump, playerJump.getWidth() / FRAME_COLS, playerJump.getHeight() / FRAME_ROWS);
@@ -92,6 +99,8 @@ public class CovidAttack extends ApplicationAdapter {
 		MapParser.parseMapLayers(world, tiledMap);
 		player = new Player(world); //calls the body from Player class, contains physics
 		enemy = new Enemy(world); //calls the body from Enemy class, contains physics
+		enemy2 = new Enemy2(world);
+		enemy3 = new Enemy3(world);
 	}
 	@Override
 	public void render () {
@@ -103,6 +112,8 @@ public class CovidAttack extends ApplicationAdapter {
 		TextureRegion currentFrame;
 		batch.begin();
 		enemy1Draw();
+		enemy2Draw();
+		enemy3Draw();
 
 		boolean isOverlapping = false;
 
@@ -188,6 +199,16 @@ public class CovidAttack extends ApplicationAdapter {
 	public void enemy1Draw(){
 		batch.draw(enemy1Texture, enemy.getBody1().getPosition().x * PIXEL_PER_METER - (enemy1Texture.getWidth() / 2),
 				enemy.getBody1().getPosition().y * PIXEL_PER_METER - (enemy1Texture.getHeight() / 2));
+	}
+	//draws the sprite batch of enemy #2
+	public void enemy2Draw(){
+		batch.draw(enemy2Texture, enemy2.getBody2().getPosition().x * PIXEL_PER_METER - (enemy2Texture.getWidth() / 2),
+				enemy2.getBody2().getPosition().y * PIXEL_PER_METER - (enemy2Texture.getHeight() / 2));
+	}
+	//draws the sprite batch of enemy #3
+	public void enemy3Draw(){
+		batch.draw(enemy3Texture, enemy3.getBody3().getPosition().x * PIXEL_PER_METER - (enemy3Texture.getWidth() / 2),
+				enemy3.getBody3().getPosition().y * PIXEL_PER_METER - (enemy3Texture.getHeight() / 2));
 	}
 	private void playerUpdate(int horizontalForce, boolean isJumping) {
 		if (player.isDead()) {
