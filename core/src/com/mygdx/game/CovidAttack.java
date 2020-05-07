@@ -50,7 +50,7 @@ public class CovidAttack extends ApplicationAdapter {
 	private Texture enemy1Texture;
 	private Texture enemy2Texture;
 	private Texture enemy3Texture;
-	private double enemyRadius = 1.1;
+	private double enemyRadius = 2;
 
 	@Override
 	public void create() {
