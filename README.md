@@ -5,7 +5,8 @@
  <h3> Screenshots </h3>
  
  <h3> Flow Chart </h3>
-  
+  ![Flowchart](https://user-images.githubusercontent.com/49411343/81308761-cd51f680-9047-11ea-8b60-a87081e1da15.PNG)
+
  <hr size = "1">
   
  <h3> UML Diagram </h3>
