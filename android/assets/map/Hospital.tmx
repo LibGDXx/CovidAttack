@@ -13,7 +13,7 @@
  </objectgroup>
  <objectgroup id="3" name="bounds" offsetx="2.97058" offsety="1.48529">
   <object id="2" name="1" x="1054.55" y="736.364">
-   <polyline points="-1039.39,345.455 -1037.03,-725.848 723.224,-723.167 719.83,159.5"/>
+   <polyline points="-1039.39,345.455 -1037.03,-725.848 723.224,-723.167 723.83,334.5"/>
   </object>
   <object id="3" x="17.8235" y="429.248">
    <polyline points="0,0 1774.92,1.48529"/>
