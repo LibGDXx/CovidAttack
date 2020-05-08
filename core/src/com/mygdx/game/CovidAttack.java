@@ -2,19 +2,12 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.physics.box2d.*;
 
 import javax.swing.*;
 
@@ -72,8 +65,8 @@ public class CovidAttack extends ApplicationAdapter {
 		TextureRegion[] jumpFrame = new TextureRegion[FRAME_COLS * FRAME_ROWS]; //create texture region for jumping animation
 		int index2 = 0;
 		//accounts for every frame in the player jumping animation
-		for(int i = 0; i < FRAME_ROWS; i++){
-			for(int j = 0; j < FRAME_COLS; j++){
+		for(int i = 0; i < FRAME_ROWS; i++) {
+			for(int j = 0; j < FRAME_COLS; j++) {
 				jumpFrame[index2++] = tmp2[i][j];
 			}
 		}
@@ -87,8 +80,8 @@ public class CovidAttack extends ApplicationAdapter {
 		TextureRegion[] idleFrame = new TextureRegion[FRAME_COLS1 * FRAME_ROWS1]; //create texture region for idle animation
 		int index3 = 0;
 		//accounts for every frame in the player idle animation
-		for(int i = 0; i < FRAME_ROWS1; i++){
-			for(int j = 0; j < FRAME_COLS1; j++){
+		for(int i = 0; i < FRAME_ROWS1; i++) {
+			for(int j = 0; j < FRAME_COLS1; j++) {
 				idleFrame[index3++] = tmp3[i][j];
 			}
 		}
@@ -104,6 +97,7 @@ public class CovidAttack extends ApplicationAdapter {
 		enemy2 = new Enemy2(world);
 		enemy3 = new Enemy3(world);
 	}
+
 	@Override
 	public void render () {
 		update();
@@ -117,9 +111,9 @@ public class CovidAttack extends ApplicationAdapter {
 		enemy1Radius();
 		enemy2Radius();
 		enemy3Radius();
-
+    
 		//checks for the appropriate animation for character depending on its position, which is represented by the state variable.
-		switch(state){
+		switch(state) {
 			default:
 				//if the player is not jumping, the default case is called and the idle animation plays
 				currentFrame = idleAnimation.getKeyFrame(stateTime, true);
@@ -135,6 +129,7 @@ public class CovidAttack extends ApplicationAdapter {
 		}
 		batch.end();
 	}
+
 	@Override
 	public void dispose() {
 		batch.dispose();
@@ -146,6 +141,7 @@ public class CovidAttack extends ApplicationAdapter {
 		tiledMapRenderer.dispose();
 		tiledMap.dispose();
 	}
+
 	public void update() {
 		world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
 		inputUpdate();
@@ -154,16 +150,17 @@ public class CovidAttack extends ApplicationAdapter {
 		tiledMapRenderer.setView(orthographicCamera);
 		batch.setProjectionMatrix(orthographicCamera.combined);
 	}
+
 	public void levelUpdate() {
 		if (levelNum == 1) {
-			if (player.getBody().getPosition().x >= 13 && player.getBody().getPosition().x <= 14 && player.getBody().getPosition().y >= 4 && player.getBody().getPosition().y <= 5) {
+			if (player.getBody().getPosition().x >= 49 && player.getBody().getPosition().x <= 50 && player.getBody().getPosition().y >= 4 && player.getBody().getPosition().y <= 5) {
 				tiledMapRenderer = new OrthogonalTiledMapRenderer(new TmxMapLoader().load("map/City.tmx"));
 				player = new Player(world); //calls the body from Player class, contains physics
 				levelNum++;
 			}
 		}
 		else if (levelNum == 2) {
-			if (player.getBody().getPosition().x >= 22 && player.getBody().getPosition().x <= 23 && player.getBody().getPosition().y >= 4 && player.getBody().getPosition().y <= 5) {
+			if (player.getBody().getPosition().x >= 49 && player.getBody().getPosition().x <= 50 && player.getBody().getPosition().y >= 4 && player.getBody().getPosition().y <= 5) {
 				tiledMapRenderer = new OrthogonalTiledMapRenderer(new TmxMapLoader().load("map/Neighborhood.tmx"));
 				player = new Player(world); //calls the body from Player class, contains physics
 				levelNum++;
@@ -171,6 +168,7 @@ public class CovidAttack extends ApplicationAdapter {
 		}
 		System.out.println(player.getBody().getPosition().x + " " + player.getBody().getPosition().y);
 	}
+
 	//updates the camera to the correct position when player moves
 	public void cameraUpdate() {
 		Vector3 position = orthographicCamera.position;
@@ -179,10 +177,12 @@ public class CovidAttack extends ApplicationAdapter {
 		orthographicCamera.position.set(position);
 		orthographicCamera.update();
 	}
+
 	@Override
 	public void resize(int width, int height) {
 		orthographicCamera.setToOrtho(false, width / SCALE, height / SCALE);
 	}
+
 	//controls the movement of the player depending on user clicks of the mouse
 	public void inputUpdate() {
 		int horizontalForce = 0;
@@ -205,6 +205,7 @@ public class CovidAttack extends ApplicationAdapter {
 	}
 	//draws the sprite batch for all enemies
 	public void enemyDraw(){
+
 		batch.draw(enemy1Texture, enemy.getBody1().getPosition().x * PIXEL_PER_METER - (enemy1Texture.getWidth() / 2),
 				enemy.getBody1().getPosition().y * PIXEL_PER_METER - (enemy1Texture.getHeight() / 2));
 		batch.draw(enemy2Texture, enemy2.getBody2().getPosition().x * PIXEL_PER_METER - (enemy2Texture.getWidth() / 2),
