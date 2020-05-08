@@ -156,15 +156,29 @@ public class CovidAttack extends ApplicationAdapter {
 	public void levelUpdate() {
 		if (levelNum == 1) {
 			if (player.getBody().getPosition().x >= 49 && player.getBody().getPosition().x <= 50 && player.getBody().getPosition().y >= 4 && player.getBody().getPosition().y <= 5) {
-				tiledMapRenderer = new OrthogonalTiledMapRenderer(new TmxMapLoader().load(MAP_PATH[1]));
+				world = new World(new Vector2(VELOCITY_X, VELOCITY_Y), false);
+				world.setContactListener(new WorldContactListener());
+				tiledMap = new TmxMapLoader().load(MAP_PATH[1]);
+				tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 				player = new Player(world); //calls the body from Player class, contains physics
+				enemy = new Enemy(world); //calls the body from Enemy class, contains physics
+				enemy2 = new Enemy2(world);
+				enemy3 = new Enemy3(world);
+				MapParser.parseMapLayers(world, tiledMap);
 				levelNum++;
 			}
 		}
 		else if (levelNum == 2) {
 			if (player.getBody().getPosition().x >= 49 && player.getBody().getPosition().x <= 50 && player.getBody().getPosition().y >= 4 && player.getBody().getPosition().y <= 5) {
-				tiledMapRenderer = new OrthogonalTiledMapRenderer(new TmxMapLoader().load(MAP_PATH[2]));
+				world = new World(new Vector2(VELOCITY_X, VELOCITY_Y), false);
+				world.setContactListener(new WorldContactListener());
+				tiledMap = new TmxMapLoader().load(MAP_PATH[2]);
+				tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 				player = new Player(world); //calls the body from Player class, contains physics
+				MapParser.parseMapLayers(world, tiledMap);
+				enemy = new Enemy(world); //calls the body from Enemy class, contains physics
+				enemy2 = new Enemy2(world);
+				enemy3 = new Enemy3(world);
 				levelNum++;
 			}
 		}
