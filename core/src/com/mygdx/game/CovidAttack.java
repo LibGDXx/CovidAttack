@@ -108,13 +108,14 @@ public class CovidAttack extends ApplicationAdapter {
 		stateTime += Gdx.graphics.getDeltaTime();
 		TextureRegion currentFrame;
 		batch.begin();
-		if(levelNum == 3) // clause checks to see if the level is the city level, and if it is, it will place the door on a higher spot because of the elevated ground of the city map
-		{
-			batch.draw(door, 1500, 255, 50f, 70f);
+		if(levelNum == 3) { // clause checks to see if the level is the city level, and if it is, it will place the door on a higher spot because of the elevated ground of the city map
+			batch.draw(door, 1500, 280, 50f, 70f);
 		}
-		else
-			{
-				batch.draw(door, 1500, 80, 50f, 70f);
+		else if (levelNum == 2) {
+			batch.draw(door, 2250, 100, 50f, 70f);
+		}
+		else {
+				batch.draw(door, 1500, 100, 60f, 70f);
 			}
 		enemyDraw();
 		enemy1Radius();
@@ -162,7 +163,7 @@ public class CovidAttack extends ApplicationAdapter {
 
 	public void levelUpdate() {
 		if (levelNum == 1) {
-			if (player.getBody().getPosition().x >= 49 && player.getBody().getPosition().x <= 50 && player.getBody().getPosition().y >= 3.5 && player.getBody().getPosition().y <= 5) {
+			if (player.getBody().getPosition().x >= 47 && player.getBody().getPosition().x <= 48 && player.getBody().getPosition().y >= 3.5 && player.getBody().getPosition().y <= 5) {
 				world = new World(new Vector2(VELOCITY_X, VELOCITY_Y), false);
 				world.setContactListener(new WorldContactListener());
 				tiledMap = new TmxMapLoader().load(MAP_PATH[1]);
@@ -176,12 +177,12 @@ public class CovidAttack extends ApplicationAdapter {
 			}
 		}
 		else if (levelNum == 2) {
-			if (player.getBody().getPosition().x >= 49 && player.getBody().getPosition().x <= 50 && player.getBody().getPosition().y >= 3.5 && player.getBody().getPosition().y <= 5) {
+			if (player.getBody().getPosition().x >= 71 && player.getBody().getPosition().x <= 72 && player.getBody().getPosition().y >= 3.5 && player.getBody().getPosition().y <= 5) {
 				world = new World(new Vector2(VELOCITY_X, VELOCITY_Y), false);
 				world.setContactListener(new WorldContactListener());
 				tiledMap = new TmxMapLoader().load(MAP_PATH[2]);
 				tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-				player = new Player(world, 8f, 10f); //calls the body from Player class, contains physics, new player coordinates ensure player doesn't fall through the city map
+				player = new Player(world, 8f, 11f); //calls the body from Player class, contains physics, new player coordinates ensure player doesn't fall through the city map
 				MapParser.parseMapLayers(world, tiledMap);
 				enemy = new Enemy(world, 15.5f, 14.25f); //calls the body from Enemy class, contains physics, new enemy coordinate parameters create fixed spawns for enemies
 				enemy2 = new Enemy2(world, 46.8f, 16.75f);
@@ -190,7 +191,7 @@ public class CovidAttack extends ApplicationAdapter {
 			}
 		}
 		else if (levelNum == 3) {
-			if (player.getBody().getPosition().x >= 49 && player.getBody().getPosition().x <= 50 && player.getBody().getPosition().y >= 7.5 && player.getBody().getPosition().y <= 10) {
+			if (player.getBody().getPosition().x >= 47 && player.getBody().getPosition().x <= 48 && player.getBody().getPosition().y >= 7.5 && player.getBody().getPosition().y <= 10) {
 				Win.winMessage();
 			}
 		}

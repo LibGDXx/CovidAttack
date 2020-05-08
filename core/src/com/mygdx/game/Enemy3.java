@@ -8,7 +8,7 @@ public class Enemy3 {
     public static final String ENEMY_IMG_PATH3 = "enemy3.png"; //path to the sprite of the first enemy character
 
     private static final float ENEMY_START_X3 = 35f; //where enemy3 starts on level 1 x-coordinate. doesn't update
-    private static final float ENEMY_START_Y3 = 18f; //where enemy3 starts on level 1 y-coordinate. doesn't update
+    private static final float ENEMY_START_Y3 = 5f; //where enemy3 starts on level 1 y-coordinate. doesn't update
     private Body body; //the body of the enemy where physics is applied to
 
     public Enemy3(World world) {
