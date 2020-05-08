@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="left-up" width="112" height="75" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="29">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="left-up" width="112" height="75" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="37">
  <tileset firstgid="1" source="City.tsx"/>
  <tileset firstgid="8401" source="Platform Block.tsx"/>
  <layer id="1" name="tiles" width="112" height="75">
@@ -23,25 +23,34 @@
   <object id="23" name="5" x="1128" y="686">
    <polyline points="229.5,1.83333 488,2"/>
   </object>
-  <object id="26" x="799" y="766.5">
+  <object id="26" name="6" x="799" y="766.5">
    <polyline points="0,0 48,0.5"/>
   </object>
-  <object id="28" x="1199" y="768">
+  <object id="28" name="7" x="1199" y="768">
    <polyline points="0,0 48,0.5"/>
+  </object>
+  <object id="34" name="1" x="715" y="732.625">
+   <polyline points="370.988,-18.625 352.996,-18.6133 352.992,-39.6172 334.992,-39.6172 334.988,-75.6289 316.996,-75.6172 316.996,-93.6133 260.004,-93.6211 260,-75.625 242,-75.625 241.992,-39.6094 221,-39.625 220.969,-18.5653 203.042,-18.5859"/>
+  </object>
+  <object id="35" name="1" x="689.909" y="901.636">
+   <polyline points="228.106,-37.6151 246.093,-37.636"/>
+  </object>
+  <object id="36" name="1" x="843.25" y="900.417">
+   <polyline points="224.766,-36.4198 242.757,-36.4251"/>
   </object>
  </objectgroup>
  <objectgroup id="3" name="bounds">
   <object id="3" name="1" x="916" y="916">
-   <polyline points="0,0 1.33333,-53.3333 18.6667,-53.3333 18.6667,-146.667 1.33333,-146.667 1.33333,-204 18.6667,-204 18.6667,-224 41.3333,-224 42.6667,-261.333 58.6667,-261.333 58.6667,-277.333 116,-277.333 116,-261.333 134.667,-261.333 134.667,-226.667 153.333,-226.667 153.333,-206.667 153.333,-201.333 168,-201.333 168,-149.333 152,-149.333 150.667,-50.6667 170.667,-50.6667 169.333,2.66667"/>
+   <polyline points="169.999,-51.9987 169.333,2.66667 1.98889,1.97778 2.01111,-51.9777"/>
   </object>
   <object id="9" name="2" x="414.833" y="816.833">
    <polyline points="209,-49.6667 209,0 0,0 1,-49.6667"/>
   </object>
   <object id="10" name="3" x="623.667" y="672.359">
-   <polyline points="128,-48.3595 128,1.97386 0,0 0,-48.3595"/>
+   <polyline points="128,-48.3595 128.125,-0.15114 0,0 0,-48.3595"/>
   </object>
   <object id="11" name="4" x="1119" y="590">
-   <polyline points="240.667,-47 240.667,2 0,0 0,-49"/>
+   <polyline points="239.917,-45.25 240.667,2 0,1.5 1.5,-45.5"/>
   </object>
   <object id="14" name="5" x="1068" y="745.333">
    <polyline points="-1039.39,345.455 -1037.03,-725.848 723.224,-723.167 723.83,334.5"/>
@@ -54,6 +63,18 @@
   </object>
   <object id="27" x="1198.5" y="768.5">
    <polyline points="0,0 0,48.5 49,49 48.5,0.5"/>
+  </object>
+  <object id="30" name="1" x="732.667" y="883.667">
+   <polyline points="203.327,-19.6707 203.341,-115.647"/>
+  </object>
+  <object id="31" name="1" x="865.045" y="883.284">
+   <polyline points="202.962,-19.2852 202.965,-115.287"/>
+  </object>
+  <object id="32" name="1" x="715" y="786.5">
+   <polyline points="221.017,-18.491 202.993,-18.5234 203.001,-72.4724"/>
+  </object>
+  <object id="33" name="1" x="883.182" y="786.182">
+   <polyline points="184.822,-18.1836 202.813,-18.1797 202.812,-72.1819"/>
   </object>
  </objectgroup>
 </map>
