@@ -9,7 +9,7 @@
 
 Neighborhood Level: displays player in the middle of a neighborhood surrounded by Covid-19 infected enemies.
 
-![neighborhoodSS](https://user-images.githubusercontent.com/49411343/81354737-044cfa00-9092-11ea-9ced-8f04bfe5be2b.PNG)
+![neighborhoodBG](https://user-images.githubusercontent.com/49411343/81419678-428afd80-9114-11ea-8ace-63f827562669.PNG)
 
 City Level: displays player navigating through the city on the way to safety!
 
