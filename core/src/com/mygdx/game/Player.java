@@ -1,8 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class Player {
@@ -10,13 +7,10 @@ public class Player {
     private static final float PLAYER_DENSITY = 0.8f; //gravity
     public static final float JUMP_FORCE = 250f; //how high player jumps
     public static final float RUN_FORCE = 5f; //speed at which player moves horizontally (forward/backward)
-    public static final String PLAYER_IMG_PATH = "Character-single.png";
     public static final float PLAYER_START_X = 8f; //where player starts x-coordinate. doesn't update
     public static final float PLAYER_START_Y = 10f; //where player starts y-coordinate. doesn't update
     private Body body; //the body of the player where physics is applied to
     private boolean isJumping = false;
-    private boolean isDead = false;
-
 
     public Player(World world) {
         createBoxBody(world, PLAYER_START_X, PLAYER_START_Y);
@@ -39,16 +33,10 @@ public class Player {
     public Body getBody() {
         return body;
     }
-    public void hit() {
-        isDead = true;
-    }
     public void setJumping(boolean jumping) {
         isJumping = jumping;
     }
     public boolean isJumping() {
         return isJumping;
-    }
-    public boolean isDead() {
-        return isDead;
     }
 }

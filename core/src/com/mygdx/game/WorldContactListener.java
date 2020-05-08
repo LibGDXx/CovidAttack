@@ -14,11 +14,6 @@ public class WorldContactListener implements ContactListener {
             player.setJumping(false);
             CovidAttack.state = 2;
         }
-        if (isDangerContact(fa, fb)) {
-            Player player = (Player) fb.getUserData();
-            player.setJumping(false);
-            player.hit();
-        }
     }
     @Override
     public void endContact(Contact cntct) {
@@ -30,13 +25,6 @@ public class WorldContactListener implements ContactListener {
             Player player = (Player) fb.getUserData();
             player.setJumping(true);
         }
-        if (isDangerContact(fa, fb)) {
-            Player player = (Player) fb.getUserData();
-            player.setJumping(true);
-        }
-    }
-    private boolean isDangerContact(Fixture a, Fixture b) {
-        return (a.getUserData() instanceof DangerZone && b.getUserData() instanceof  Player);
     }
     private boolean isGroundContact(Fixture a, Fixture b) {
         return (a.getUserData() instanceof Ground && b.getUserData() instanceof Player);
