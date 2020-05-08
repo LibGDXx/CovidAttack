@@ -16,7 +16,7 @@ public class DesktopLauncher {
 		config.title = "CovidAttack";
 
 		int selection = JOptionPane.showConfirmDialog(null, title,
-				"CovidAttack",   JOptionPane.YES_NO_OPTION);
+				"CovidAttack",   JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
 		boolean isYes = (selection == JOptionPane.YES_OPTION);
 		boolean isNo = (selection == JOptionPane.NO_OPTION);
 		//if the user selects the "yes" button, the CovidAttack() class is called

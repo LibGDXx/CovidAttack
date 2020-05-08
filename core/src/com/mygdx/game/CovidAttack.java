@@ -166,7 +166,7 @@ public class CovidAttack extends ApplicationAdapter {
 				world.setContactListener(new WorldContactListener());
 				tiledMap = new TmxMapLoader().load(MAP_PATH[1]);
 				tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-				player = new Player(world); //calls the body from Player class, contains physics
+				player = new Player(world, 2f, 6f); //calls the body from Player class, contains physics
 				enemy = new Enemy(world, 20.1f, 21.5f); //calls the body from Enemy class, contains physics, new enemy coordinate parameters create fixed spawns for enemies
 				enemy2 = new Enemy2(world, 37f, 9.75f);
 				enemy3 = new Enemy3(world, 45.5f, 4.25f);
