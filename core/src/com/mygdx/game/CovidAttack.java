@@ -19,7 +19,6 @@ public class CovidAttack extends ApplicationAdapter {
 	private static final int POSITION_ITERATIONS = 2;
 	private static final float VELOCITY_Y = -9.85f;
 	private static final float VELOCITY_X = 0f;
-	//private static final String MAP_PATH = "map/Hospital.tmx"; //temp game map until levels are completed
 	private final String[] MAP_PATH= {"map/Hospital.tmx", "map/Neighborhood.tmx", "map/City.tmx"};
 	private OrthographicCamera orthographicCamera;
 	private Box2DDebugRenderer box2DDebugRenderer;
@@ -46,6 +45,7 @@ public class CovidAttack extends ApplicationAdapter {
 	private Texture enemy3Texture;
 	private double enemyRadius = 2;
 	private int levelNum = 1;
+	private Texture door;
 
 	@Override
 	public void create() {
@@ -57,6 +57,7 @@ public class CovidAttack extends ApplicationAdapter {
 		enemy1Texture = new Texture(Enemy.ENEMY_IMG_PATH);
 		enemy2Texture = new Texture(Enemy2.ENEMY_IMG_PATH2);
 		enemy3Texture = new Texture(Enemy3.ENEMY_IMG_PATH3);
+		door = new Texture(Gdx.files.internal("Door.png"));
 
 		playerJump = new Texture(Gdx.files.internal("Jumping.png")); //the sprite sheet used for jumping animation
 
@@ -107,6 +108,7 @@ public class CovidAttack extends ApplicationAdapter {
 		stateTime += Gdx.graphics.getDeltaTime();
 		TextureRegion currentFrame;
 		batch.begin();
+		batch.draw(door, 1500, 80, 50f, 70f);
 		enemyDraw();
 		enemy1Radius();
 		enemy2Radius();
@@ -164,6 +166,11 @@ public class CovidAttack extends ApplicationAdapter {
 				tiledMapRenderer = new OrthogonalTiledMapRenderer(new TmxMapLoader().load(MAP_PATH[2]));
 				player = new Player(world); //calls the body from Player class, contains physics
 				levelNum++;
+			}
+		}
+		else if (levelNum == 3) {
+			if (player.getBody().getPosition().x >= 49 && player.getBody().getPosition().x <= 50 && player.getBody().getPosition().y >= 4 && player.getBody().getPosition().y <= 5) {
+				Win.winMessage();
 			}
 		}
 		System.out.println(player.getBody().getPosition().x + " " + player.getBody().getPosition().y);
