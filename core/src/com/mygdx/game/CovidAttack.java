@@ -119,14 +119,14 @@ public class CovidAttack extends ApplicationAdapter {
 			default:
 				//if the player is not jumping, the default case is called and the idle animation plays
 				currentFrame = idleAnimation.getKeyFrame(stateTime, true);
-				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (playerIdle.getWidth() / 2f),
-						player.getBody().getPosition().y * PIXEL_PER_METER - (playerIdle.getHeight() / 2f));
+				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (playerIdle.getWidth() / 2f) + 20,
+						player.getBody().getPosition().y * PIXEL_PER_METER - (playerIdle.getHeight() / 2f) + 50);
 				break;
 				//if the player is jumping, case 1 is called and the jumping animation plays
 			case 1:
 				currentFrame = jumpAnimation.getKeyFrame(stateTime, true);
-				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (playerJump.getWidth() / 2f),
-						player.getBody().getPosition().y * PIXEL_PER_METER - (playerJump.getHeight() / 2f));
+				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (playerJump.getWidth() / 2f) + 20,
+						player.getBody().getPosition().y * PIXEL_PER_METER - (playerJump.getHeight() / 2f) + 50);
 				break;
 		}
 		batch.end();
@@ -155,21 +155,35 @@ public class CovidAttack extends ApplicationAdapter {
 
 	public void levelUpdate() {
 		if (levelNum == 1) {
-			if (player.getBody().getPosition().x >= 49 && player.getBody().getPosition().x <= 50 && player.getBody().getPosition().y >= 4 && player.getBody().getPosition().y <= 5) {
-				tiledMapRenderer = new OrthogonalTiledMapRenderer(new TmxMapLoader().load(MAP_PATH[1]));
+			if (player.getBody().getPosition().x >= 49 && player.getBody().getPosition().x <= 50 && player.getBody().getPosition().y >= 3.5 && player.getBody().getPosition().y <= 5) {
+				world = new World(new Vector2(VELOCITY_X, VELOCITY_Y), false);
+				world.setContactListener(new WorldContactListener());
+				tiledMap = new TmxMapLoader().load(MAP_PATH[1]);
+				tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 				player = new Player(world); //calls the body from Player class, contains physics
+				enemy = new Enemy(world); //calls the body from Enemy class, contains physics
+				enemy2 = new Enemy2(world);
+				enemy3 = new Enemy3(world);
+				MapParser.parseMapLayers(world, tiledMap);
 				levelNum++;
 			}
 		}
 		else if (levelNum == 2) {
-			if (player.getBody().getPosition().x >= 49 && player.getBody().getPosition().x <= 50 && player.getBody().getPosition().y >= 4 && player.getBody().getPosition().y <= 5) {
-				tiledMapRenderer = new OrthogonalTiledMapRenderer(new TmxMapLoader().load(MAP_PATH[2]));
+			if (player.getBody().getPosition().x >= 49 && player.getBody().getPosition().x <= 50 && player.getBody().getPosition().y >= 3.5 && player.getBody().getPosition().y <= 5) {
+				world = new World(new Vector2(VELOCITY_X, VELOCITY_Y), false);
+				world.setContactListener(new WorldContactListener());
+				tiledMap = new TmxMapLoader().load(MAP_PATH[2]);
+				tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 				player = new Player(world); //calls the body from Player class, contains physics
+				MapParser.parseMapLayers(world, tiledMap);
+				enemy = new Enemy(world); //calls the body from Enemy class, contains physics
+				enemy2 = new Enemy2(world);
+				enemy3 = new Enemy3(world);
 				levelNum++;
 			}
 		}
 		else if (levelNum == 3) {
-			if (player.getBody().getPosition().x >= 49 && player.getBody().getPosition().x <= 50 && player.getBody().getPosition().y >= 4 && player.getBody().getPosition().y <= 5) {
+			if (player.getBody().getPosition().x >= 49 && player.getBody().getPosition().x <= 50 && player.getBody().getPosition().y >= 3.5 && player.getBody().getPosition().y <= 5) {
 				Win.winMessage();
 			}
 		}
