@@ -7,12 +7,17 @@ public class Enemy3 {
     private static final float ENEMY_DENSITY = 1.0f; //gravity
     public static final String ENEMY_IMG_PATH3 = "enemy3.png"; //path to the sprite of the first enemy character
 
-    private static final float ENEMY_START_X3 = 35f; //where enemy1 starts x-coordinate. doesn't update
-    private static final float ENEMY_START_Y3 = 18f; //where enemy1 starts y-coordinate. doesn't update
+    private static final float ENEMY_START_X3 = 35f; //where enemy3 starts on level 1 x-coordinate. doesn't update
+    private static final float ENEMY_START_Y3 = 18f; //where enemy3 starts on level 1 y-coordinate. doesn't update
     private Body body; //the body of the enemy where physics is applied to
 
     public Enemy3(World world) {
         createBoxBody1(world, ENEMY_START_X3, ENEMY_START_Y3);
+    }
+    // Overload Constructor can now take in custom coordinates from CovidAttack Class
+    public Enemy3(World world, float enemyX, float enemyY)
+    {
+        createBoxBody1(world, enemyX, enemyY);
     }
 
     private void createBoxBody1(World world, float x, float y) {
