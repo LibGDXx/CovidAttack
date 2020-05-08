@@ -29,10 +29,7 @@ City Level: displays player navigating through the city on the way to safety!
  ![UMLDiagram](https://user-images.githubusercontent.com/49411343/81354328-ea5ee780-9090-11ea-9f2e-4a10450d5211.PNG)
   
  <hr size = "1">
-  
- <h3> Sequence Diagram </h3>
-  
- <hr size = "1">
+ 
  
  <h3> Video </h3>
    
