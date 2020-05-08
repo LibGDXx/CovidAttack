@@ -28,6 +28,7 @@ public class Enemy3 {
         body = world.createBody(bdef);
         body.createFixture(fixtureDef).setUserData(this);
     }
+
     //allows the CovidAttack() method to obtain the full enemy body that has physics, size, and starting coordinates.
     public Body getBody3() {
         return body;
