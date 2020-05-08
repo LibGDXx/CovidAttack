@@ -19,7 +19,8 @@ public class CovidAttack extends ApplicationAdapter {
 	private static final int POSITION_ITERATIONS = 2;
 	private static final float VELOCITY_Y = -9.85f;
 	private static final float VELOCITY_X = 0f;
-	private static final String MAP_PATH = "map/Hospital.tmx"; //temp game map until levels are completed
+	//private static final String MAP_PATH = "map/Hospital.tmx"; //temp game map until levels are completed
+	private final String[] MAP_PATH= {"map/Hospital.tmx", "map/Neighborhood.tmx", "map/City.tmx"};
 	private OrthographicCamera orthographicCamera;
 	private Box2DDebugRenderer box2DDebugRenderer;
 	private World world;
@@ -45,7 +46,6 @@ public class CovidAttack extends ApplicationAdapter {
 	private Texture enemy3Texture;
 	private double enemyRadius = 2;
 	private int levelNum = 1;
-	boolean isOverlapping = false;
 
 	@Override
 	public void create() {
@@ -89,7 +89,7 @@ public class CovidAttack extends ApplicationAdapter {
 		idleAnimation = new Animation<TextureRegion>(.10f, idleFrame); //controls how many frames per second the idle animation moves at
 
 		box2DDebugRenderer = new Box2DDebugRenderer();
-		tiledMap = new TmxMapLoader().load(MAP_PATH);
+		tiledMap = new TmxMapLoader().load(MAP_PATH[0]);
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 		MapParser.parseMapLayers(world, tiledMap);
 		player = new Player(world); //calls the body from Player class, contains physics
@@ -117,14 +117,14 @@ public class CovidAttack extends ApplicationAdapter {
 			default:
 				//if the player is not jumping, the default case is called and the idle animation plays
 				currentFrame = idleAnimation.getKeyFrame(stateTime, true);
-				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (playerIdle.getWidth() / 2),
-						player.getBody().getPosition().y * PIXEL_PER_METER - (playerIdle.getHeight() / 2));
+				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (playerIdle.getWidth() / 2f),
+						player.getBody().getPosition().y * PIXEL_PER_METER - (playerIdle.getHeight() / 2f));
 				break;
 				//if the player is jumping, case 1 is called and the jumping animation plays
 			case 1:
 				currentFrame = jumpAnimation.getKeyFrame(stateTime, true);
-				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (playerJump.getWidth() / 2),
-						player.getBody().getPosition().y * PIXEL_PER_METER - (playerJump.getHeight() / 2));
+				batch.draw(currentFrame, player.getBody().getPosition().x * PIXEL_PER_METER - (playerJump.getWidth() / 2f),
+						player.getBody().getPosition().y * PIXEL_PER_METER - (playerJump.getHeight() / 2f));
 				break;
 		}
 		batch.end();
@@ -154,14 +154,14 @@ public class CovidAttack extends ApplicationAdapter {
 	public void levelUpdate() {
 		if (levelNum == 1) {
 			if (player.getBody().getPosition().x >= 49 && player.getBody().getPosition().x <= 50 && player.getBody().getPosition().y >= 4 && player.getBody().getPosition().y <= 5) {
-				tiledMapRenderer = new OrthogonalTiledMapRenderer(new TmxMapLoader().load("map/City.tmx"));
+				tiledMapRenderer = new OrthogonalTiledMapRenderer(new TmxMapLoader().load(MAP_PATH[1]));
 				player = new Player(world); //calls the body from Player class, contains physics
 				levelNum++;
 			}
 		}
 		else if (levelNum == 2) {
 			if (player.getBody().getPosition().x >= 49 && player.getBody().getPosition().x <= 50 && player.getBody().getPosition().y >= 4 && player.getBody().getPosition().y <= 5) {
-				tiledMapRenderer = new OrthogonalTiledMapRenderer(new TmxMapLoader().load("map/Neighborhood.tmx"));
+				tiledMapRenderer = new OrthogonalTiledMapRenderer(new TmxMapLoader().load(MAP_PATH[2]));
 				player = new Player(world); //calls the body from Player class, contains physics
 				levelNum++;
 			}
@@ -203,52 +203,46 @@ public class CovidAttack extends ApplicationAdapter {
 		}
 		player.getBody().setLinearVelocity(horizontalForce * Player.RUN_FORCE, player.getBody().getLinearVelocity().y);
 	}
-	//draws the sprite batch for all enemies
-	public void enemyDraw(){
 
-		batch.draw(enemy1Texture, enemy.getBody1().getPosition().x * PIXEL_PER_METER - (enemy1Texture.getWidth() / 2),
-				enemy.getBody1().getPosition().y * PIXEL_PER_METER - (enemy1Texture.getHeight() / 2));
-		batch.draw(enemy2Texture, enemy2.getBody2().getPosition().x * PIXEL_PER_METER - (enemy2Texture.getWidth() / 2),
-				enemy2.getBody2().getPosition().y * PIXEL_PER_METER - (enemy2Texture.getHeight() / 2));
-		batch.draw(enemy3Texture, enemy3.getBody3().getPosition().x * PIXEL_PER_METER - (enemy3Texture.getWidth() / 2),
-				enemy3.getBody3().getPosition().y * PIXEL_PER_METER - (enemy3Texture.getHeight() / 2));
+	//draws the sprite batch for all enemies
+	public void enemyDraw() {
+		batch.draw(enemy1Texture, enemy.getBody1().getPosition().x * PIXEL_PER_METER - (enemy1Texture.getWidth() / 2f),
+				enemy.getBody1().getPosition().y * PIXEL_PER_METER - (enemy1Texture.getHeight() / 2f));
+		batch.draw(enemy2Texture, enemy2.getBody2().getPosition().x * PIXEL_PER_METER - (enemy2Texture.getWidth() / 2f),
+				enemy2.getBody2().getPosition().y * PIXEL_PER_METER - (enemy2Texture.getHeight() / 2f));
+		batch.draw(enemy3Texture, enemy3.getBody3().getPosition().x * PIXEL_PER_METER - (enemy3Texture.getWidth() / 2f),
+				enemy3.getBody3().getPosition().y * PIXEL_PER_METER - (enemy3Texture.getHeight() / 2f));
 	}
+
 	//controls the player-enemy collision. if the player gets within a 2 block radius of an enemy, the player will die.
 	public void enemy1Radius(){
 		if((player.getBody().getPosition().x) >= (enemy.getBody1().getPosition().x - enemyRadius) && (player.getBody().getPosition().x)
 				<= (enemy.getBody1().getPosition().x + enemyRadius)){
 			if((player.getBody().getPosition().y) >= (enemy.getBody1().getPosition().y - enemyRadius) && (player.getBody().getPosition().y)
 					<= (enemy.getBody1().getPosition().y + enemyRadius)) {
-				isOverlapping = true;
-				if(isOverlapping){
 					Die.dieMessage(); //calls the method which controls the JOptionPanes for player death
-				}
 			}
 		}
 	}
+
 	//controls the player-enemy collision. if the player gets within a 2 block radius of an enemy, the player will die.
 	public void enemy2Radius(){
 		if((player.getBody().getPosition().x) >= (enemy2.getBody2().getPosition().x - enemyRadius) && (player.getBody().getPosition().x)
 				<= (enemy2.getBody2().getPosition().x + enemyRadius)){
 			if((player.getBody().getPosition().y) >= (enemy2.getBody2().getPosition().y - enemyRadius) && (player.getBody().getPosition().y)
 					<= (enemy2.getBody2().getPosition().y + enemyRadius)) {
-				isOverlapping = true;
-				if(isOverlapping){
 					Die.dieMessage(); //calls the method which controls the JOptionPanes for player death
-				}
 			}
 		}
 	}
+
 	//controls the player-enemy collision. if the player gets within a 2 block radius of an enemy, the player will die.
 	public void enemy3Radius(){
 		if((player.getBody().getPosition().x) >= (enemy3.getBody3().getPosition().x - enemyRadius) && (player.getBody().getPosition().x)
 				<= (enemy3.getBody3().getPosition().x + enemyRadius)){
 			if((player.getBody().getPosition().y) >= (enemy3.getBody3().getPosition().y - enemyRadius) && (player.getBody().getPosition().y)
 					<= (enemy3.getBody3().getPosition().y + enemyRadius)) {
-				isOverlapping = true;
-				if(isOverlapping){
 					Die.dieMessage(); //calls the method which controls the JOptionPanes for player death
-				}
 			}
 		}
 	}
