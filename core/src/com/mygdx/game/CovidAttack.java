@@ -9,8 +9,6 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.physics.box2d.*;
 
-import javax.swing.*;
-
 public class CovidAttack extends ApplicationAdapter {
 	private static final float SCALE = 2.0f;
 	public static final float PIXEL_PER_METER = 32f;
